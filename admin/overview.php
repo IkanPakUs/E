@@ -2,6 +2,7 @@
 	include_once('validate.php');
 	require_once('../helpers/DB.php');
     require_once('../functions/OverviewController.php');
+	$Overview = new OverviewController();
 
 	$dashboard_active = "active";
     $page_title = "Overview";

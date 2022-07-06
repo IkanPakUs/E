@@ -4,19 +4,7 @@ class TransactionController
 {
     public $transactions;
 
-    public function __construct() {
-
-        if ($this->getLastPathSegment() == 'transaction.php') {
-            $this->getTransactions();
-        } else {
-
-            if (isset($_GET['id'])) {
-                $this->show();
-            }
-        }
-    }
-
-    protected function getTransactions() {
+    public function getTransactions() {
         $this->transactions = DB::table('transactions')
                                 ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.status as status_name', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name')
                                 ->leftJoin('users', 'users.id', '=', 'transactions.user_id')
@@ -24,7 +12,7 @@ class TransactionController
                                 ->get();
     }
 
-    protected function show() {
+    public function show() {
         $id = $_GET["id"];
         $transactions = DB::table('transactions')
                           ->where('transactions.id', '=', $id)
@@ -41,16 +29,4 @@ class TransactionController
 
         $this->transactions = $transactions;
     }
-
-    protected function getLastPathSegment() {
-        $url = $_SERVER['REQUEST_URI'];
-
-        $path = parse_url($url, PHP_URL_PATH);
-        $pathTrimmed = trim($path, '/');
-        $pathTokens = explode('/', $pathTrimmed); 
-
-        return end($pathTokens);
-    }
 }
-
-$Transaction = new TransactionController;

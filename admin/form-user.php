@@ -1,7 +1,9 @@
 <?php 
     require_once('../helpers/DB.php');
-    require_once('../functions/UserController.php');
 	include_once('validate.php');
+    require_once('../functions/UserController.php');
+	$User = new UserController;
+	$User->getRoles();
     
 	$user_active = "active";
 	$type = isset($_GET['id']) ? "update" : "create";
@@ -10,6 +12,7 @@
 
 	if ($type == "update") {
 		$menu["Edit"] = "form-user.php?id=" . $_GET['id'];
+		$User->edit();
 	} else {
 		$menu["Create"] = "form-user.php";
 	}

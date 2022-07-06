@@ -1,8 +1,10 @@
 <?php 
     require_once('../helpers/DB.php');
-    require_once('../functions/StoreController.php');
 	include_once('validate.php');
-    
+    require_once('../functions/StoreController.php');
+	$Store = new StoreController;
+    $Store->getCategory();
+	
 	$store_active = "active";
 	$type = isset($_GET['id']) ? "update" : "create";
     $page_title = "My Store";
@@ -10,6 +12,7 @@
 
 	if ($type == "update") {
 		$menu["Edit"] = "form-product.php?id=" . $_GET['id'];
+		$Store->edit();
 	} else {
 		$menu["Create"] = "form-product.php";
 	}

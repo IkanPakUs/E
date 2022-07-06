@@ -2,6 +2,8 @@
 	include_once('validate.php');
 	require_once('../helpers/DB.php');
     require_once('../functions/OverviewController.php');
+	$Analytic = new OverviewController();
+    $Analytic->getLastOverview();
 
 	$analytic_active = "active";
     $page_title = "Analytic";
@@ -35,10 +37,10 @@
                                 Order
                             </div>
                             <div class="value">
-                                <?= number_format($Overview->overview["ov_order"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_order"], 0, '.') ?>
                             </div>
                             <div class="stats">
-                                <span class="<?= $Overview->ls_overview["ls_order"]["gain"] ? "up" : "down" ?>"><?= $Overview->ls_overview["ls_order"]["value"] ?>%</span> Since last month
+                                <span class="<?= $Analytic->ls_overview["ls_order"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_order"]["value"] ?>%</span> Since last month
                             </div>
                         </div>
                         <div class="card__right-content">
@@ -51,10 +53,10 @@
                                 Users
                             </div>
                             <div class="value">
-                                <?= number_format($Overview->overview["ov_visitor"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_visitor"], 0, '.') ?>
                             </div>
                             <div class="stats">
-                                <span class="<?= $Overview->ls_overview["ls_visitor"]["gain"] ? "up" : "down" ?>"><?= $Overview->ls_overview["ls_visitor"]["value"] ?>%</span> Since last month
+                                <span class="<?= $Analytic->ls_overview["ls_visitor"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_visitor"]["value"] ?>%</span> Since last month
                             </div>
                         </div>
                         <div class="card__right-content">
@@ -67,10 +69,10 @@
                                 Sales
                             </div>
                             <div class="value">
-                                Rp. <?= number_format(ceil($Overview->overview["ov_sales"]), 0, ',') ?>
+                                Rp. <?= number_format(ceil($Analytic->overview["ov_sales"]), 0, ',') ?>
                             </div>
                             <div class="stats">
-                                <span class="<?= $Overview->ls_overview["ls_sales"]["gain"] ? "up" : "down" ?>"><?= $Overview->ls_overview["ls_sales"]["value"] ?>%</span> Since last month
+                                <span class="<?= $Analytic->ls_overview["ls_sales"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_sales"]["value"] ?>%</span> Since last month
                             </div>
                         </div>
                         <div class="card__right-content">
@@ -83,10 +85,10 @@
                                 Sold
                             </div>
                             <div class="value">
-                                <?= number_format($Overview->overview["ov_product"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_product"], 0, '.') ?>
                             </div>
                             <div class="stats">
-                                <span class="<?= $Overview->ls_overview["ls_product"]["gain"] ? "up" : "down" ?>"><?= $Overview->ls_overview["ls_product"]["value"] ?>%</span> Since last month
+                                <span class="<?= $Analytic->ls_overview["ls_product"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_product"]["value"] ?>%</span> Since last month
                             </div>
                         </div>
                         <div class="card__right-content">

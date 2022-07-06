@@ -1,7 +1,9 @@
 <?php 
     require_once('../helpers/DB.php');
-    require_once('../functions/UserController.php');
 	include_once('validate.php');
+    require_once('../functions/UserController.php');
+	$User = new UserController;
+	$User->getUser();
 
 	$user_active = "active";
     $page_title = "My User";

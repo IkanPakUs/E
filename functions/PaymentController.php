@@ -19,5 +19,3 @@ class PaymentController
     }
 
 }
-
-$Payment = new PaymentController();

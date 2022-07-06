@@ -9,7 +9,8 @@
 
     require_once 'helpers/DB.php';
     require_once 'functions/PaymentController.php';
-
+    
+    $Payment = new PaymentController();
     $page = "payment";
 ?>
 

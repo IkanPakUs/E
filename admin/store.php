@@ -1,8 +1,10 @@
 <?php 
     require_once('../helpers/DB.php');
-    require_once('../functions/StoreController.php');
 	include_once('validate.php');
-
+    require_once('../functions/StoreController.php');
+	$Store = new StoreController;
+	$Store->getProduct();
+	
 	$store_active = "active";
     $page_title = "My Store";
 	$menu = ["Store" => "store.php"];

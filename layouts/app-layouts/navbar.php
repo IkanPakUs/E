@@ -1,5 +1,6 @@
 <?php 
     require_once 'functions/CartController.php';
+    $NavData = new CartController();
 ?>
 <div class="nav">
     <div class="left-content">
@@ -22,13 +23,13 @@
                 <input type="text" class="search">
             </div>
         </div>
-        <?php if (isset($Cart->user)) : ?>
+        <?php if (isset($NavData->user)) : ?>
         <div class="icon">
             <a href="wishlist.php">
                 <i class="bi bi-heart hover-text" data-hover="Wishlisst"></i>
             </a>
         </div>
-        <?php if($Cart->role == 1) : ?>
+        <?php if($NavData->role == 1) : ?>
             <div class="icon">
                 <a href="admin/overview.php">
                     <i class="bi bi-journals hover-text" data-hover="Admin dashboard"></i>
@@ -37,7 +38,7 @@
         <?php endif ?>
         <div class="icon">
             <i class="bi bi-bag hover-text cart-icon" data-hover="Cart" data-bs-toggle="dropdown" aria-expanded="false">
-                <?php if(isset($Cart->cart_list) && $Cart->cart_list) : ?>
+                <?php if(isset($NavData->cart_list) && $NavData->cart_list) : ?>
                 <span></span>
                 <?php endif ?>
             </i>
@@ -45,8 +46,8 @@
                 <li>
                     <div class="cart-hover">
                         <div class="select-items">
-                            <?php if (isset($Cart->cart_list) && $Cart->cart_list) : ?>
-                            <?php foreach ($Cart->cart_list as $key => $cart) : ?>
+                            <?php if (isset($NavData->cart_list) && $NavData->cart_list) : ?>
+                            <?php foreach ($NavData->cart_list as $key => $cart) : ?>
                             <div class="cart">
                                 <div class="cart__left-side">
                                     <img src="<?= $_SESSION["root_path"] . 'src/img/product/' . $cart["image_url"] ?>" alt="">
@@ -75,11 +76,11 @@
         </div>
         <?php endif ?>
         <div class="icon dd-user hover-text" data-hover="Account">
-            <?php if(isset($Cart->user)) : ?>
+            <?php if(isset($NavData->user)) : ?>
             <i class="bi bi-person" data-bs-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu">
                 <li><label>Role :
-                        <?= $Cart->role == 1 ? "admin" : "member" ?>
+                        <?= $NavData->role == 1 ? "admin" : "member" ?>
                     </label></li>
                 <hr>
                 <li><a href="functions/logout.php">Log out</a></li>

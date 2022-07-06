@@ -15,31 +15,24 @@ class CartController
             $this->user = $user;
             $this->role = $user["role_id"];
             $this->cart_list = $cart_list;
-
-            if ($this->getLastPathSegment() == 'shopping-cart.php') {
-                $this->getAddressDetail();
-                $this->getAddressList();
-                $this->getTransactionSummary();
-            }
-
         }
     }
 
-    protected function getAddressDetail() {
+    public function getAddressDetail() {
         $user = $_SESSION['user'];
 
         $address = DB::table('user_detail')->where('user_id', '=', $user['id'])->where('is_main', '=', 1)->get();
         $this->address = @$address[0];
     }
 
-    protected function getAddressList() {
+    public function getAddressList() {
         $user = $_SESSION['user'];
 
         $address_list = DB::table('user_detail')->where('user_id', '=', $user['id'])->get();
         $this->address_list = $address_list;
     }
 
-    protected function getTransactionSummary() {
+    public function getTransactionSummary() {
         $cart_list = $this->cart_list;
 
         $subtotal = 0;
@@ -71,16 +64,4 @@ class CartController
     
         return false;
     }
-
-    protected function getLastPathSegment() {
-        $url = $_SERVER['REQUEST_URI'];
-
-        $path = parse_url($url, PHP_URL_PATH);
-        $pathTrimmed = trim($path, '/');
-        $pathTokens = explode('/', $pathTrimmed); 
-
-        return end($pathTokens);
-    }
 }
-
-$Cart = new CartController();

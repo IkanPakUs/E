@@ -34,5 +34,3 @@ class WishlistController
     }
 
 }
-
-$Wishlist = new WishlistController();

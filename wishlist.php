@@ -5,6 +5,7 @@
 
     require_once 'helpers/DB.php';
     require_once 'functions/WishlistController.php';
+    $Wishlist = new WishlistController();
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,7 @@
     </div>
 
     <div class="wishlist-img">
-        <img src="https://images.pexels.com/photos/3782317/pexels-photo-3782317.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="wishlist">
+        <img src="src/img/thumbnail/wishlist.jpg" alt="wishlist">
     </div>
     <div class="container">
         <?php include_once('layouts/app-layouts/navbar.php') ?>
@@ -59,7 +60,12 @@
                     <?php endforeach ?>
                 </div>
                 <?php else : ?>
-                    <h1>You don't have wishlist product</h1>
+                    <div class="non-wishlist">
+                        <p>
+                            <h1>Hey.. Looks like you doesn't have wishlist product</h1>
+                            <span>now you can save your dream product, and it will appear here forever. just click love button in product box</span>
+                        </p>
+                    </div>
                 <?php endif ?>
             </div>
         </div>

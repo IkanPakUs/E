@@ -1,7 +1,9 @@
 <?php 
     require_once('../helpers/DB.php');
-    require_once('../functions/TransactionController.php');
 	include_once('validate.php');
+    require_once('../functions/TransactionController.php');
+	$Transaction = new TransactionController;
+	$Transaction->show();
 
 	$transaction_active = "active";
     $page_title = "Transaction";

@@ -25,24 +25,7 @@ class CartDomain
 
     public function callMethod() {
         $method = $_GET["method"];
-
-        switch ($method) {
-            case 'addCart':
-                $this->addCart();
-                break;
-            
-            case 'removeCart':
-                $this->removeCart();
-                break;
-            
-            case 'wishlist':
-                $this->wishlist();
-                break;
-            
-            default:
-                header("location:../catalog.php");
-                break;
-        }
+        $this->$method();
     }
 
     protected function addCart() {

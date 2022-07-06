@@ -8,7 +8,10 @@ const productAttach = (result) => {
 
     if (what_page == "catalog") {
         $('.query-info').innerHTML = `Showing 0 of 0 results`;
-        $('.product-list').innerHTML = '<h1>Your product isnt available</h1>';
+        $('.product-list').innerHTML = `<div class="non-product">
+                                            <h1>Sorry, the product you search not available yet</h1>
+                                            <span>Maybe you can find another similiar product with filter by category in left section</span>
+                                        </div>`;
     
         if (result) {
             $('.query-info').innerHTML = `Showing ${result.total} of ${result.total} results`;
@@ -46,7 +49,10 @@ const removeCartRegis = () => {
                     
                     if (what_page == 'shopping-cart') {
                         if (!all('.card-cart').length) {
-                            $('.list-cart').innerHTML = `You don't have any product in your cart`;
+                            $('.list-cart').innerHTML = `<div class="non-checkout">
+                                                            <h1>C'mon get the product you like, and came back here later</h1>
+                                                            <span>You can click cart button in product box</span>
+                                                        </div>`;
         
                             $('.proceed-btn').setAttribute('disabled', 'disabled');
                         }
@@ -93,7 +99,12 @@ const wishlistRegis = () => {
                             wishlist_product.remove();
                             
                             if (!all('.product').length) {
-                                $('.product-list').innerHTML = `<h1>You don't have wishlist product</h1>`
+                                $('.product-list').innerHTML = `<div class="non-wishlist">
+                                                                    <p>
+                                                                        <h1>Hey.. Looks like you doesn't have wishlist product</h1>
+                                                                        <span>now you can save your dream product, and it will appear here forever. just click love button in product box</span>
+                                                                    </p>
+                                                                </div>`
                             }
                         }, 500);
 
@@ -300,6 +311,14 @@ const calculateSummary = () => {
 
     if (search) {
         search.addEventListener("click", async () => {
+            const content = $('.content');
+            const what_page = content.getAttribute('id');
+
+            if (what_page != "catalog") {
+                localStorage.setItem("name", " ");
+                document.location = "catalog.php";
+            }
+
             $('.search-form').classList.toggle('show');
             
             const search_class = ($('.search-form').className).split(' ').includes('show');
@@ -319,41 +338,11 @@ const calculateSummary = () => {
 })();
 
 (function () {
-    const list = all('.category-list');
-
-    if (list) {
-        list[0]?.classList.add('active');
-        
-        list.forEach((el, i, list) => {
-            el.addEventListener('click', async (e) => {
-                const category = e.target.getAttribute('category');
-    
-                const result = await api.productFilter(`category=${category}`);
-                productAttach(result);
-                
-                list.forEach(l => l.classList.remove('active'));
-                e.target.classList.add('active');
-
-                wishlistRegis();
-                addCartRegis();
-            });
-        })
-    }
-})();
-
-(function () {
     const el_search = $('.search');
 
     if (el_search) {
         el_search.addEventListener("input", async () => {
             const search_value = el_search.value;
-    
-            const content = $('.content');
-            const what_page = content.getAttribute('id');
-    
-            if (what_page != "catalog") {
-                document.location = "catalog.php";
-            }
     
             const result = await api.productFilter(`filter=${search_value}`);
             productAttach(result);
@@ -361,6 +350,27 @@ const calculateSummary = () => {
             wishlistRegis();
             addCartRegis();
         });
+    }
+})();
+
+(function () {
+    const list = all('.category-list');
+
+    if (list) {
+        list.forEach((el, i, list) => {
+            el.addEventListener('click', async (e) => {
+                const category = e.target.getAttribute('category');
+
+                const result = await api.productFilter(`category=${category}`);
+                productAttach(result);
+
+                list.forEach(l => l.classList.remove('active'));
+                e.target.classList.add('active');
+
+                wishlistRegis();
+                addCartRegis();
+            });
+        })
     }
 })();
 

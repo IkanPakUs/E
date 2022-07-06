@@ -9,6 +9,11 @@
 
     require_once 'helpers/DB.php';
     require_once 'functions/CartController.php';
+
+    $Cart = new CartController();
+    $Cart->getAddressDetail();
+    $Cart->getAddressList();
+    $Cart->getTransactionSummary();
 ?>
 
 <!DOCTYPE html>
@@ -148,7 +153,10 @@
                         </div>
                         <?php endforeach ?>
                         <?php else : ?>
-                            You don't have any product in your cart
+                            <div class="non-checkout">
+                                <h1>C'mon get the product you like, and came back here later</h1>
+                                <span>You can click cart button in product box</span>
+                            </div>
                         <?php endif ?>
                     </div>
                 </div>

@@ -5,6 +5,8 @@
     
     require_once 'helpers/DB.php';
     require_once 'functions/CatalogController.php';
+
+    $Catalog = new CatalogController();
 ?>
 
 <!DOCTYPE html>
@@ -34,9 +36,9 @@
                     <h5>Product categories</h5>
                 </div>
                 <ul>
-                    <li><a category="" class="category-list">All</a></li>
+                    <li><a category="" class="category-list <?= isset($_GET["filter"]["category"]) ? "" : "active" ?>">All</a></li>
                     <?php foreach ($Catalog->categories as $key => $category) : ?>
-                    <li><a category="<?= $category['id'] ?>" class="category-list"><?= $category["name"] ?></a></li>
+                    <li><a category="<?= $category['id'] ?>" class="category-list <?= @$_GET["filter"]["category"] == $category["id"] ? "active" : "" ?>"><?= $category["name"] ?></a></li>
                     <?php endforeach ?>
                 </ul>
             </div>
@@ -74,8 +76,9 @@
                     <div class="query-info">
                         Showing 0 of 0 results
                     </div>
-                    <div class="product">
-                        <h1>Your product isnt available</h1>
+                    <div class="non-product">
+                        <h1>Sorry, the product you search not available yet</h1>
+                        <span>Maybe you can find another similiar product with filter by category in left section</span>
                     </div>
                 <?php endif ?>
             </div>
