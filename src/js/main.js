@@ -429,3 +429,21 @@ const calculateSummary = () => {
         });
     }
 })();
+
+(function () {
+    const question = all('.wrap__question');
+
+    if (question) {
+        question.forEach(el => {
+            el.addEventListener("click", (e) => {
+                const id = e.target.getAttribute("id");
+                const el_answer = $(`.wrap__answer[id="${id}"]`);
+                
+                el_answer.classList.toggle("show");
+                
+                const el_class_list = el_answer.classList;
+                Array.from(el_class_list).includes("show") ? e.target.querySelector("i").className = "bi-chevron-up" : e.target.querySelector("i").className = "bi-chevron-down";
+            });
+        });
+    }
+})();
