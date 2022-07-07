@@ -159,11 +159,11 @@
             <div class="faq-content">
                 <div class="faq__wrap">
                     <div class="wrap__question" id="1">
-                        What is europhia mean ?
+                        What is Euphoria mean ?
                         <i class="bi bi-chevron-down"></i>
                     </div>
                     <div class="wrap__answer" id="1">
-                        Europhia mean "A feeling or state of intense excitement and happiness", and that we implement in our store. So we hope you will feel happy when buying product in our store, and happy after using our product
+                        Euphoria mean "A feeling or state of intense excitement and happiness", and that we implement in our store. So we hope you will feel happy when buying product in our store, and happy after using our product
                     </div>
                 </div>
                 <div class="faq__wrap">
@@ -190,8 +190,8 @@
         <div id="about">
             <h1>About Us</h1>
             <div class="about-content">
-                <p>As a store with the concept of <span>"One Stop Shopping"</span>  for all furnishings products, EUROPHIA provides various quality collections for residential, office, accessories, to commercial spaces. EUROPHIA provides a variety of the latest styles and designs to meet customer needs for dream furniture. </p>
-                <p>Prioritizing customer needs and tastes, EUROPHIA Furnishing develops the latest concept of "innovative and durable designs at affordable prices".</p>
+                <p>As a store with the concept of <span>"One Stop Shopping"</span>  for all furnishings products, EUPHORIA provides various quality collections for residential, office, accessories, to commercial spaces. EUPHORIA provides a variety of the latest styles and designs to meet customer needs for dream furniture. </p>
+                <p>Prioritizing customer needs and tastes, EUPHORIA Furnishing develops the latest concept of "innovative and durable designs at affordable prices".</p>
             </div>
             <div class="contact-content">
                 <div class="contact__title">
@@ -205,7 +205,7 @@
                             <span class="sm">09:00 AM - 05:00 PM</span>
                         </li>
                         <li>
-                            <span>Email : europhia@support.com</span>
+                            <span>Email : EUPHORIA@support.com</span>
                             <span class="sm">Everyday</span>
                             <span class="sm">24 Hours</span>
                         </li>

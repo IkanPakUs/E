@@ -1,7 +1,7 @@
 <!-- SIDEBAR -->
 <section id="sidebar">
     <a href="<?= $_SESSION["root_path"] ?>" class="brand">
-        <span class="text">Europhia</span>
+        <span class="text">Euphoria</span>
     </a>
 
     <ul class="side-menu top">
