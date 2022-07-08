@@ -186,14 +186,14 @@ class Search
         $products = self::$products;
         $type = self::$type;
         $value = self::$value;
-        $wishlist = $_SESSION["wishlist"];
+        $wishlist = @$_SESSION["wishlist"];
 
         if(isset($user)) {
             $user_cart = DB::table('user_cart')->where('user_id', '=', $user["id"])->get();
         }
 
         if ($products) {
-            if ($wishlist) {
+            if (isset($wishlist)) {
                 $products = array_map(function($product) use($wishlist) {
                     $product['wishlist'] = in_array($product['id'], array_column($wishlist, 'product_id'));
                     
@@ -201,7 +201,7 @@ class Search
                 }, $products);
             }
 
-            if ($user_cart) {
+            if (isset($user_cart)) {
                 $products = array_map(function($product) use($user_cart) {
                     $product["in_cart"] = in_array($product['id'], array_column($user_cart, 'product_id'));
                     
