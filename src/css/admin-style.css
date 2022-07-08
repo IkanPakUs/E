@@ -572,11 +572,11 @@ body {
 #content #analytic .top-content .card-wrap {
 	display: flex;
 	flex-wrap: wrap;
-	width: 40%;
+	width: 50%;
 }
 
 #content #analytic .top-content .card {
-	width: 280px;
+	width: 45%;
 	height: 175px;
 	background-color: var(--white-text);
 	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
@@ -635,7 +635,7 @@ body {
 }
 
 #content #analytic .top-content .user-grow-wrap {
-	width: 60%;
+	width: 50%;
 	height: 390px;
 	background-color: var(--white-text);
 	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);

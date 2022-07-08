@@ -1,6 +1,26 @@
 import { $, all } from './DOMHelper.js';
 import * as api from './api.js';
 
+const deleteBtnRegis = () => {
+    const delete_btn = all('#user .delete-btn');
+
+    delete_btn.forEach(el => {
+        el.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            if (confirm('Are you sure delete this user ?')) {
+                const user_id = e.target.getAttribute('user_id');
+
+                const result = await api.removeUser(user_id);
+
+                if (result) {
+                    $(`tr[user_id="${user_id}"]`).remove();
+                }
+            }
+        });
+    });
+}
+
 const paginationRegis = () => {
     const paginate_page = ["transaction", "user", "store"];
 
@@ -31,12 +51,14 @@ const paginationRegis = () => {
                 }
 
                 paginationRegis();
+                deleteBtnRegis();
             });
         });
     }
 }
 
 (function () {
+    deleteBtnRegis();
     paginationRegis();
 })();
 
@@ -132,26 +154,6 @@ const paginationRegis = () => {
 })();
 
 (function () {
-    const delete_btn = all('#store .delete-btn');
-
-    delete_btn.forEach(el => {
-        el.addEventListener("click", async (e) => {
-            e.preventDefault();
-
-            if (confirm('Are you sure delete this product ?')) {
-                const product_id = e.target.getAttribute('product_id');
-    
-                const result = await api.removeProduct(product_id);
-    
-                if (result) {
-                    $(`tr[product_id="${product_id}"]`).remove();
-                }
-            }
-        });
-    });
-})();
-
-(function () {
     const image = $('#image');
     const image_wrap = $('.image-wrap');
     const image_preview = $('.img-preview');
@@ -168,26 +170,6 @@ const paginationRegis = () => {
             };
         });
     }
-})();
-
-(function () {
-    const delete_btn = all('#user .delete-btn');
-
-    delete_btn.forEach(el => {
-        el.addEventListener("click", async (e) => {
-            e.preventDefault();
-
-            if (confirm('Are you sure delete this user ?')) {
-                const user_id = e.target.getAttribute('user_id');
-
-                const result = await api.removeUser(user_id);
-
-                if (result) {
-                    $(`tr[user_id="${user_id}"]`).remove();
-                }
-            }
-        });
-    });
 })();
 
 (function () {
@@ -213,6 +195,8 @@ const paginationRegis = () => {
                                                      <td colspan="6">Your search data not available, please use another keyword</td>
                                                    </tr>`
                 }
+
+                deleteBtnRegis();
             });
         });
     }
