@@ -40,6 +40,10 @@ const wishlistAction = (product_id) => {
         }).then(async (res) => {
             const result = await res.json().then(result => result);
 
+            if ('code' in result) {
+                result.code == 401 ? document.location = 'login.php' : '';
+            }
+            
             return resolve(result);
         }).catch(err => console.log(err));
     });
