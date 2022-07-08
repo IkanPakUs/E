@@ -1,7 +1,7 @@
 import { $, all } from './DOMHelper.js';
 import * as api from './api.js';
 
-const deleteBtnRegis = () => {
+const deleteUserRegis = () => {
     const delete_btn = all('#user .delete-btn');
 
     delete_btn.forEach(el => {
@@ -15,6 +15,26 @@ const deleteBtnRegis = () => {
 
                 if (result) {
                     $(`tr[user_id="${user_id}"]`).remove();
+                }
+            }
+        });
+    });
+}
+
+const deleteProductRegis = () => {
+    const delete_btn = all('#store .delete-btn');
+
+    delete_btn.forEach(el => {
+        el.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            if (confirm('Are you sure delete this product ?')) {
+                const user_id = e.target.getAttribute('product_id');
+
+                const result = await api.removeProduct(user_id);
+
+                if (result) {
+                    $(`tr[product_id="${user_id}"]`).remove();
                 }
             }
         });
@@ -51,14 +71,16 @@ const paginationRegis = () => {
                 }
 
                 paginationRegis();
-                deleteBtnRegis();
+                deleteUserRegis();
+                deleteProductRegis();
             });
         });
     }
 }
 
 (function () {
-    deleteBtnRegis();
+    deleteProductRegis();
+    deleteUserRegis();
     paginationRegis();
 })();
 
@@ -196,7 +218,7 @@ const paginationRegis = () => {
                                                    </tr>`
                 }
 
-                deleteBtnRegis();
+                deleteUserRegis();
             });
         });
     }

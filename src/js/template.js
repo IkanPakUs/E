@@ -185,15 +185,15 @@ const user = (data, i) => {
 }
 
 const store = (data, i) => {
-    return `<tr product_id="${data.id}">
+    return `<tr product_id="${data.product_id}">
                 <td class="serial">${++i}</td>
                 <td><span class="name">${data.name}</span></td>
                 <td><span class="product">${formatPrice(data.price)}</span></td>
                 <td><span class="count">${data.category_name}</span></td>
                 <td>
-                    <a href="form-product.php?id=${data.id}">Edit</a>
+                    <a href="form-product.php?id=${data.product_id}">Edit</a>
                     /
-                    <a href="#" class="delete-btn" product_id="${data.id}">Delete</a>
+                    <a href="#" class="delete-btn" product_id="${data.product_id}">Delete</a>
                 </td>
             </tr>`
 }
