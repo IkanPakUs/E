@@ -1,6 +1,45 @@
 import { $, all } from './DOMHelper.js';
 import * as api from './api.js';
 
+const paginationRegis = () => {
+    const paginate_page = ["transaction", "user", "store"];
+
+    const page = $('.page')?.getAttribute('id');
+    const paginate_nav = all('.paginate_nav');
+
+    if (paginate_page.includes(page) && paginate_nav.length > 0) {
+        paginate_nav.forEach(el => {
+            el.addEventListener('click', async (e) => {
+                const list_input = all(`#${page} .search`);
+
+                const class_list = Array.from(e.target.classList);
+                const now_page = e.target.getAttribute('page');
+
+                const selected_page = class_list.includes('prev') ? now_page - 1 : class_list.includes('next') ? Number(now_page) + 1 : now_page;
+
+
+                let qs = Array.from(list_input).map((v) => `${page}[${v.getAttribute('id')}]=${v.value}`);
+                qs = [...qs, `meta[page]=${selected_page}`].join("&");
+
+                const result = await api.getList(page, qs, selected_page);
+                if (result) {
+                    $('.table tbody').innerHTML = result;
+                } else {
+                    $('.table tbody').innerHTML = `<tr>
+                                                     <td colspan="6">Your search data not available, please use another keyword</td>
+                                                   </tr>`
+                }
+
+                paginationRegis();
+            });
+        });
+    }
+}
+
+(function () {
+    paginationRegis();
+})();
+
 (async function () {
     const canvas = $('#user-growth');
 
@@ -162,8 +201,10 @@ import * as api from './api.js';
             el.addEventListener('change', async (e) => {
                 const list_input = all(`#${page} .search`);
     
-                const qs = Array.from(list_input).map((v) => `${page}[${v.getAttribute('id')}]=${v.value}`).join("&");
-                const result = await api.getList(page, qs);
+                let qs = Array.from(list_input).map((v) => `${page}[${v.getAttribute('id')}]=${v.value}`);
+                qs = [...qs, `meta[page]=1`].join("&");
+
+                const result = await api.getList(page, qs, 1);
                 
                 if (result) {
                     $('.table tbody').innerHTML = result;

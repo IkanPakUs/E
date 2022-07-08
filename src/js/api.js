@@ -1,3 +1,4 @@
+import { $, all } from './DOMHelper.js';
 import * as template from './template.js';
 
 const productFilter = (qs) => {
@@ -246,6 +247,23 @@ const getList = (page, qs) => {
 
             if (result.status && result.data) {
                 const el = result.data.map((v, i) => template[page](v, i)).join(" ");
+
+                $('.pagination__page-info ul').innerHTML = "i".repeat(result.meta.total).split('').map((v, i) => {
+                    return template.pagination(i);
+                }).join(" ");
+
+                all(`#${page} li.paginate_nav`).forEach(el => {
+                    el.classList.remove('active');
+                });
+                $(`#${page} li.paginate_nav[page="${result.meta.page}"]`).classList.add('active');
+
+                all(`#${page} i.paginate_nav`).forEach(el => {
+                    el.setAttribute('page', result.meta.page);
+                });
+
+                result.meta.page >= result.meta.total ? $(`#${page} i.paginate_nav.next`).classList.add('disable') : $(`#${page} i.paginate_nav.next`).classList.remove('disable');
+                result.meta.page > 1 ? $(`#${page} i.paginate_nav.prev`).classList.remove('disable') : $(`#${page} i.paginate_nav.prev`).classList.add('disable');
+
                 return resolve(el);
             }
 

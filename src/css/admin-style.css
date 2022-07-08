@@ -318,11 +318,24 @@ body {
 	box-sizing: border-box;
 	font-weight: lighter;
 	font-size: 16px;
+	cursor: pointer;
+	position: relative;
 }
 
-#table-content .card .pagination .pagination__page-info ul li.active {
-	border-radius: 50%;
-	border: 2px solid var(--primary-color);
+#table-content .card .pagination i.disable {
+	pointer-events: none;
+	cursor: pointer;
+	color: var(--dark-grey);
+}
+
+#table-content .card .pagination .pagination__page-info ul li.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 2px;
+	background-color: var(--primary-color);
 }
 
 /* FORM GROUP */

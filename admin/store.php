@@ -93,15 +93,17 @@
 					<div class="card__footer">
 						<div class="pagination">
 							<div class="pagination__left">
-								<i class="bi bi-chevron-left"></i>
+								<i page="<?= $Store->meta["page"] ?>" class="bi bi-chevron-left paginate_nav <?= $Store->meta["page"] <= 1 ? "disable" : "" ?> prev"></i>
 							</div>
 							<div class="pagination__page-info">
 								<ul>
-									<li class="active">1</li>
+									<?php for ($i=1; $i <= $Store->meta["total"] ; $i++) : ?>
+									<li page="<?= $i ?>" class="<?= $i == 1 ? "active" : "" ?> paginate_nav"><?= $i ?></li>
+									<?php endfor ?>
 								</ul>
 							</div>
 							<div class="pagination__right">
-								<i class="bi bi-chevron-right"></i>
+								<i page="<?= $Store->meta["page"] ?>" class="bi bi-chevron-right paginate_nav  <?= $Store->meta["page"] >= $Store->meta["total"] ? "disable" : "" ?> next"></i>
 							</div>
 						</div>
 					</div>

@@ -198,4 +198,9 @@ const store = (data, i) => {
             </tr>`
 }
 
-export { catalog, cart, modal, addModal, transaction, user, store }
+const pagination = (i) => {
+    ++i
+    return `<li page="${i}" class="paginate_nav">${i}</li>`
+}
+
+export { catalog, cart, modal, addModal, transaction, user, store, pagination }

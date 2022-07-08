@@ -21,10 +21,12 @@ class Search
         });
 
         $like_search = ["code", "name"];
+        $limit = 10;
+        $offset = ($_GET["meta"]["page"] * $limit) - $limit;
 
         $transactions = DB::table('transactions')
                           ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.status', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name');
-
+        
         foreach ($parameter_search as $key => $value) {
             if (in_array($key, $like_search)) {
                 $transactions = $transactions->where('transactions.' . $key, 'LIKE', "%" . $value . "%");
@@ -36,11 +38,28 @@ class Search
         $transactions = $transactions->leftJoin('users', 'users.id', '=', 'transactions.user_id')
                                      ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.status')
                                      ->orderBy('transactions.created_at', 'DESC')
+                                     ->limit($limit)->offset($offset)
                                      ->get();
+        
+        $transaction_count = DB::table('transactions');
+
+        foreach ($parameter_search as $key => $value) {
+            if (in_array($key, $like_search)) {
+                $transaction_count = $transaction_count->where($key, 'LIKE', "%" . $value . "%");
+            } else {
+                $transaction_count = $transaction_count->where($key, '=', $value);
+            }
+        }
+
+        $transaction_count = $transaction_count->count();
         
         $data = [
             "status" => true,
             "data" => $transactions,
+            "meta" => [
+                "total" => ceil($transaction_count / $limit),
+                "page" => $_GET["meta"]["page"]
+            ]
         ];
 
         echo json_encode($data);
@@ -52,6 +71,8 @@ class Search
         });
 
         $like_search = ["name"];
+        $limit = 10;
+        $offset = ($_GET["meta"]["page"] * $limit) - $limit;
 
         $users = DB::table('users')->select('users.id', 'users.name', 'users.role_id', 'users.email', 'roles.name as role_name');
 
@@ -63,11 +84,27 @@ class Search
             }
         }
 
-        $users = $users->leftJoin('roles', 'roles.id', '=', 'users.role_id')->orderBy('users.id', 'ASC')->get();
+        $users = $users->leftJoin('roles', 'roles.id', '=', 'users.role_id')->orderBy('users.id', 'ASC')->limit($limit)->offset($offset)->get();
+
+        $user_count = DB::table('users');
+
+        foreach ($parameter_search as $key => $value) {
+            if (in_array($key, $like_search)) {
+                $user_count = $user_count->where($key, 'LIKE', "%" . $value . "%");
+            } else {
+                $user_count = $user_count->where($key, '=', $value);
+            }
+        }
+
+        $user_count = $user_count->count();
         
         $data = [
             "status" => true,
             "data" => $users,
+            "meta" => [
+                "total" => ceil($user_count / $limit),
+                "page" => $_GET["meta"]["page"]
+            ]
         ];
 
         echo json_encode($data);
@@ -79,6 +116,8 @@ class Search
         });
 
         $like_search = ["name"];
+        $limit = 10;
+        $offset = ($_GET["meta"]["page"] * $limit) - $limit;
 
         $products = DB::table('products')->select('products.id as product_id', 'products.name', 'price', 'category_id', 'categories.id as category', 'categories.name as category_name');
 
@@ -90,11 +129,27 @@ class Search
             }
         }
 
-        $products = $products->leftJoin('categories', 'products.category_id', '=', 'categories.id')->orderBy("products.id", "ASC")->get();
+        $products = $products->leftJoin('categories', 'products.category_id', '=', 'categories.id')->orderBy("products.id", "ASC")->limit($limit)->offset($offset)->get();
+
+        $product_count = DB::table('products');
+
+        foreach ($parameter_search as $key => $value) {
+            if (in_array($key, $like_search)) {
+                $product_count = $product_count->where($key, 'LIKE', "%" . $value . "%");
+            } else {
+                $product_count = $product_count->where($key, '=', $value);
+            }
+        }
+
+        $product_count = $product_count->count();
         
         $data = [
             "status" => true,
             "data" => $products,
+            "meta" => [
+                "total" => ceil($product_count / $limit),
+                "page" => $_GET["meta"]["page"]
+            ]
         ];
 
         echo json_encode($data);

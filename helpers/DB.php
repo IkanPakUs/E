@@ -2,7 +2,7 @@
 
 class DB {
 
-    public static $table, $select_column, $where_clause = [], $limit, $left_join = [], $conn, $dbname, $order_by;
+    public static $table, $select_column, $where_clause = [], $limit, $offset, $left_join = [], $conn, $dbname, $order_by;
 
     public static function table($table) {
         self::$table = $table;
@@ -38,6 +38,12 @@ class DB {
 
     public static function limit($count) {
         self::$limit = $count;
+
+        return new static();
+    }
+
+    public static function offset($count) {
+        self::$offset = $count;
 
         return new static();
     }
@@ -202,6 +208,7 @@ class DB {
         $where_clause = self::$where_clause;
         $order_by = self::$order_by;
         $limit = self::$limit;
+        $offset = self::$offset;
 
         self::queryValidator();
 
@@ -223,6 +230,10 @@ class DB {
 
         if (isset($limit)) {
             $sql .= " LIMIT " . $limit;
+        }
+
+        if (isset($offset)) {
+            $sql .= " OFFSET " . $offset;
         }
 
         $result = $conn->query($sql);
