@@ -65,19 +65,19 @@
                     <div class="summary-detail">
                         <div class="detail__total">
                             Subtotal
-                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["subtotal"], 0, ',') ?></span>
+                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["subtotal"], 0, 0, ',') ?></span>
                         </div>
                         <div class="detail__tax">
                             Tax
-                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["tax"], 0, ',') ?></span>
+                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["tax"], 0, 0, ',') ?></span>
                         </div>
                         <div class="detail__shipping">
                             Shipping Fee
-                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["shipping_fee"], 0, ',') ?></span>
+                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["shipping_fee"], 0, 0, ',') ?></span>
                         </div>
                         <div class="detail__grand-total">
                             Grandtotal
-                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["grand_total"], 0, ',') ?></span>
+                            <span class="price-bold">Rp. <?= number_format(@$Payment->transaction["grand_total"], 0, 0, ',') ?></span>
                         </div>
                     </div>
                     <div class="summary-action">

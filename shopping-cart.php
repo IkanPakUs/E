@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="cart__subtotal">
-                                <div class="price" id="price_<?= $cart["product_id"] ?>" price="<?= $cart["price"] ?>">Rp. <?= number_format($cart["subtotal"], 0, ',') ?></div>
+                                <div class="price" id="price_<?= $cart["product_id"] ?>" price="<?= $cart["price"] ?>">Rp. <?= number_format($cart["subtotal"], 0, 0, ',') ?></div>
                             </div>
                         </div>
                         <?php endforeach ?>
@@ -171,19 +171,19 @@
                             </div>
                             <div class="detail__total">
                                 Subtotal
-                                <span class="price-bold">Rp. <?= number_format($Cart->summary["subtotal"], 0, ',') ?></span>
+                                <span class="price-bold">Rp. <?= number_format($Cart->summary["subtotal"], 0, 0, ',') ?></span>
                             </div>
                             <div class="detail__tax">
                                 Tax
-                                <span class="price-bold">Rp. <?= number_format($Cart->summary["tax"], 0, ',') ?></span>
+                                <span class="price-bold">Rp. <?= number_format($Cart->summary["tax"], 0, 0, ',') ?></span>
                             </div>
                             <div class="detail__shipping">
                                 Shipping Fee
-                                <span class="price-bold">Rp. <?= number_format($Cart->summary["shipping"], 0, ',') ?></span>
+                                <span class="price-bold">Rp. <?= number_format($Cart->summary["shipping"], 0, 0, ',') ?></span>
                             </div>
 
                             <div class="detail__grand-total">
-                                Rp. <?= number_format($Cart->summary["grand_total"], 0, ',') ?>
+                                Rp. <?= number_format($Cart->summary["grand_total"], 0, 0, ',') ?>
                             </div>
                         </div>
                         <div class="checkout-btn">

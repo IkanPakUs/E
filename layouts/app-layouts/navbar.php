@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="cart__right-side">
                                     <div class="right-side__price">
-                                        <h6>Rp. <?= number_format($cart["price"], 0, ',') ?> x <?= $cart["quantity"] ?></h6>
+                                        <h6>Rp. <?= number_format($cart["price"], 0, 0, ',') ?> x <?= $cart["quantity"] ?></h6>
                                         <h5><?= $cart["name"] ?></h5>
                                     </div>
                                     <div class="right_side__cart-remove">

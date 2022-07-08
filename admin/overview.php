@@ -45,7 +45,7 @@
 				<li>
 					<i class='bx bxs-dollar-circle' ></i>
 					<span class="text">
-						<h3>Rp. <?= number_format(ceil($Overview->overview["ov_sales"]), 0, ',') ?></h3>
+						<h3>Rp. <?= number_format(ceil($Overview->overview["ov_sales"]), 0, 0, ',') ?></h3>
 						<p>Total Sales</p>
 					</span>
 				</li>
@@ -83,7 +83,7 @@
 										<td class="serial"><?= ++$key ?></td>
 										<td><span class="name"><?= $transaction['code'] ?></span></td>
 										<td><span class="count"><?= $transaction['user_name'] ?></span></td>
-										<td><span class="transaction"><?= number_format($transaction['grand_total'], 0, ',') ?></span></td>
+										<td><span class="transaction"><?= number_format($transaction['grand_total'], 0, 0, ',') ?></span></td>
 										<td><span class="count <?= $transaction['status_name'] ?>"><?= $transaction['status_name'] ?></span></td>
 										<td>
 											<a href="detail-transaction.php?id=<?= $transaction['id'] ?>">Show</a>
@@ -118,7 +118,7 @@
 									<tr>
 										<td class="serial"><?= ++$key ?></td>
 										<td><span class="name"><?= $member["name"] ?></span> </td>
-										<td><span class="product">Rp. <?= number_format($member["spend"], 0, ',') ?></span> </td>
+										<td><span class="product">Rp. <?= number_format($member["spend"], 0, 0, ',') ?></span> </td>
 										<td><span class="count"><?= date_format(date_create($member["created_at"]), "Y-m-d") ?></span></td>
 									</tr>
 									<?php endforeach ?>

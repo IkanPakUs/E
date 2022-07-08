@@ -45,7 +45,7 @@
 							<i>* press enter after type keyword you want search</i>
 						</div>
 						<div class="form-group">
-							<label for="category_id">Categoru</label>
+							<label for="category_id">Category</label>
 							<select id="category_id" class="search">
 								<option value="">All Category</option>
 								<?php foreach ($Store->categories as $category) : ?>
@@ -72,7 +72,7 @@
 									<tr product_id="<?= $product['product_id'] ?>">
 										<td class="serial"><?= $no++ ?></td>
 										<td><span class="name"><?= $product['name'] ?></span></td>
-										<td><span class="product"><?= number_format($product['price'], 0, ',') ?></span></td>
+										<td><span class="product"><?= number_format($product['price'], 0, 0, ',') ?></span></td>
 										<td><span class="count"><?= $product['category_name'] ?></span></td>
 										<td>
 											<a href="form-product.php?id=<?= $product['product_id'] ?>">Edit</a> 

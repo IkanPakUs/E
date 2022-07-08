@@ -37,7 +37,7 @@
                                 Order
                             </div>
                             <div class="value">
-                                <?= number_format($Analytic->overview["ov_order"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_order"], 0, 0,'.') ?>
                             </div>
                             <div class="stats">
                                 <span class="<?= $Analytic->ls_overview["ls_order"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_order"]["value"] ?>%</span> Since last month
@@ -53,7 +53,7 @@
                                 Users
                             </div>
                             <div class="value">
-                                <?= number_format($Analytic->overview["ov_visitor"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_visitor"], 0, 0,'.') ?>
                             </div>
                             <div class="stats">
                                 <span class="<?= $Analytic->ls_overview["ls_visitor"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_visitor"]["value"] ?>%</span> Since last month
@@ -69,7 +69,7 @@
                                 Sales
                             </div>
                             <div class="value">
-                                Rp. <?= number_format(ceil($Analytic->overview["ov_sales"]), 0, ',') ?>
+                                Rp. <?= number_format(ceil($Analytic->overview["ov_sales"]), 0, 0, ',') ?>
                             </div>
                             <div class="stats">
                                 <span class="<?= $Analytic->ls_overview["ls_sales"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_sales"]["value"] ?>%</span> Since last month
@@ -85,7 +85,7 @@
                                 Sold
                             </div>
                             <div class="value">
-                                <?= number_format($Analytic->overview["ov_product"], 0, '.') ?>
+                                <?= number_format($Analytic->overview["ov_product"], 0, 0,'.') ?>
                             </div>
                             <div class="stats">
                                 <span class="<?= $Analytic->ls_overview["ls_product"]["gain"] ? "up" : "down" ?>"><?= $Analytic->ls_overview["ls_product"]["value"] ?>%</span> Since last month

@@ -66,7 +66,7 @@
                                 <a href="#"><?= $product["name"] ?></a>
                             </div>
                             <div class="price">
-                                <h6>Rp <?= number_format($product["price"], 0, ',') ?></h6>
+                                <h6>Rp <?= number_format($product["price"], 0, 0, ',') ?></h6>
                             </div>
                         </div>
                     </div>
