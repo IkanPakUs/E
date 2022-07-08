@@ -238,4 +238,20 @@ const getCountryOrder = () => {
     });
 }
 
-export {productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, getUsersGrowth, getOrderGrowth, getCountryOrder};
+const getList = (page, qs) => {
+    return new Promise(resolve => {
+        fetch(`../helpers/Search.php?${qs}&page=${page}`)
+        .then(async (res) => {
+            const result = await res.json().then(result => result);
+
+            if (result.status && result.data) {
+                const el = result.data.map((v, i) => template[page](v, i)).join(" ");
+                return resolve(el);
+            }
+
+            return resolve(false);
+        }).catch(err => console.log(err));
+    });
+}
+
+export {productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, getUsersGrowth, getOrderGrowth, getCountryOrder, getList};

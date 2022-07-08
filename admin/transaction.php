@@ -26,7 +26,7 @@
 	<?php include_once('../layouts/admin-layouts/sidebar.php') ?>
 
 	<section id="content">
-		<main id="transaction">
+		<main class="page" id="transaction">
 			<?php include_once('../layouts/admin-layouts/breadcrummb.php') ?>
 
             <div id="table-content">
@@ -34,9 +34,25 @@
 					<div class="card-body">
 						<h3 class="box-title">Transaction List</h3>
 					</div>
+					<div class="card__filter">
+						<div class="form-group">
+							<label for="code">Search Code</label>
+							<input type="text" id="code" class="search">
+							<i>* press enter after type keyword you want search</i>
+						</div>
+						<div class="form-group">
+							<label for="status">Status</label>
+							<select id="status" class="search">
+								<option value="">All Status</option>
+								<?php foreach ($Transaction->statuses as $status) : ?>
+									<option value="<?= $status["id"] ?>"><?= $status["name"] ?></option>
+								<?php endforeach ?>
+							</select>
+						</div>
+					</div>
 					<div class="card-body--">
 						<div class="table-wrap">
-							<table class="table ">
+							<table class="table">
 								<thead>
 									<tr>
 										<th class="serial">#</th>
@@ -70,6 +86,21 @@
                                     <?php endif ?>
 								</tbody>
 							</table>
+						</div>
+					</div>
+					<div class="card__footer">
+						<div class="pagination">
+							<div class="pagination__left">
+								<i class="bi bi-chevron-left"></i>
+							</div>
+							<div class="pagination__page-info">
+								<ul>
+									<li class="active">1</li>
+								</ul>
+							</div>
+							<div class="pagination__right">
+								<i class="bi bi-chevron-right"></i>
+							</div>
 						</div>
 					</div>
 				</div>

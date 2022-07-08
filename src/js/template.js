@@ -156,4 +156,46 @@ const addModal = (country) => {
             </div>`
 }
 
-export { catalog, cart, modal, addModal }
+const transaction = (data, i) => {
+        return `<tr transaction_id="${data.id}">
+                    <td class="serial">${++i}</td>
+                    <td><span class="name">${data.code}</span></td>
+                    <td><span class="count">${data.user_name}</span></td>
+                    <td><span class="transaction">${formatPrice(data.grand_total)}</span></td>
+                    <td><span class="count ${data.status_name}">${data.status_name}</span></td>
+                    <td><span class="count">${data.created_at}</span></td>
+                    <td>
+                        <a href="detail-transaction.php?id=${data.id}">Show</a>
+                    </td>
+                </tr>`
+}
+
+const user = (data, i) => {
+    return `<tr user_id="${data.id}">
+                <td>${++i}</td>
+                <td>${data.name}</td>
+                <td>${data.email}</td>
+                <td>${data.role_name}</td>
+                <td>
+                    <a href="form-user.php?id=${data.id}">Edit</a>
+                    /
+                    <a href="#" class="delete-btn" user_id="${data.id}">Delete</a>
+                </td>
+            </tr>`
+}
+
+const store = (data, i) => {
+    return `<tr product_id="${data.id}">
+                <td class="serial">${++i}</td>
+                <td><span class="name">${data.name}</span></td>
+                <td><span class="product">${formatPrice(data.price)}</span></td>
+                <td><span class="count">${data.category_name}</span></td>
+                <td>
+                    <a href="form-product.php?id=${data.id}">Edit</a>
+                    /
+                    <a href="#" class="delete-btn" product_id="${data.id}">Delete</a>
+                </td>
+            </tr>`
+}
+
+export { catalog, cart, modal, addModal, transaction, user, store }

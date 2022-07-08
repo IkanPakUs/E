@@ -1,7 +1,7 @@
 1. Komang Gede Ksatria Arya Wirawan (200030704)
 
 Installation step :
-    1. Import the sql file in "sql/pemrogramanWeb.sql" to your dbms
+    1. Import the sql file in "sql/EUPHORIA_FINAL.sql" to your dbms
     2. Setup connection to you database in "helpers\DB.php" in method dbConnect
     3. For admin role
         email: komang@gmail.com

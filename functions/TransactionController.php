@@ -2,14 +2,17 @@
 
 class TransactionController
 {
-    public $transactions;
+    public $transactions, $statuses;
 
     public function getTransactions() {
         $this->transactions = DB::table('transactions')
                                 ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.status as status_name', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name')
                                 ->leftJoin('users', 'users.id', '=', 'transactions.user_id')
                                 ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.status')
+                                ->orderBy('transactions.created_at', 'DESC')
                                 ->get();
+
+        $this->statuses = DB::table('transaction_statuses')->get();
     }
 
     public function show() {

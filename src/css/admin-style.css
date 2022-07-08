@@ -208,6 +208,28 @@ body {
 }
 
 /* TABLE */
+.page .card__filter {
+	width: 40%;
+	display: flex;
+	padding: 0px 1.25em;
+}
+
+.page .card__filter label {
+	font-size: 12px;
+}
+
+.page .card__filter input {
+	margin-right: 20px;
+	font-size: 14px;
+	height: 35px;
+}
+
+.page .card__filter select {
+	width: 200px;
+	font-size: 14px;
+	height: 35px;
+}
+
 #table-content {
 	display: flex;
 	width: 100%;
@@ -275,6 +297,34 @@ body {
 	padding: .75em 1.25em;
 }
 
+#table-content .card .card__footer .pagination {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	margin: 0px 30px;
+	padding: 20px;
+	color: var(--secondary-color);
+}
+
+#table-content .card .pagination .pagination__page-info ul {
+	padding: 0px 10px;
+}
+
+#table-content .card .pagination .pagination__page-info ul li,
+#table-content .card .pagination i {
+	list-style: none;
+	display: inline-block;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	font-weight: lighter;
+	font-size: 16px;
+}
+
+#table-content .card .pagination .pagination__page-info ul li.active {
+	border-radius: 50%;
+	border: 2px solid var(--primary-color);
+}
+
 /* FORM GROUP */
 .form-group {
 	display: flex;
@@ -311,6 +361,11 @@ body {
 	pointer-events: all;
 	cursor: pointer;
 	background-color: unset;
+}
+
+.form-group i {
+	padding: 5px 0px;
+	font-size: 8px;
 }
 
 .image-input {

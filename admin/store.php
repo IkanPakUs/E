@@ -3,8 +3,9 @@
 	include_once('validate.php');
     require_once('../functions/StoreController.php');
 	$Store = new StoreController;
+	$Store->getCategory();
 	$Store->getProduct();
-	
+
 	$store_active = "active";
     $page_title = "My Store";
 	$menu = ["Store" => "store.php"];
@@ -26,7 +27,7 @@
 	<?php include_once('../layouts/admin-layouts/sidebar.php') ?>
 
 	<section id="content">
-		<main id="store">
+		<main class="page" id="store">
 			<?php include_once('../layouts/admin-layouts/breadcrummb.php') ?>
 
             <div id="table-content">
@@ -35,6 +36,22 @@
 						<h3 class="box-title">Product List</h3>
 						<div class="create-btn">
 							<a href="form-product.php">Create New</a>
+						</div>
+					</div>
+					<div class="card__filter">
+						<div class="form-group">
+							<label for="name">Search Name</label>
+							<input type="text" id="name" class="search">
+							<i>* press enter after type keyword you want search</i>
+						</div>
+						<div class="form-group">
+							<label for="category_id">Categoru</label>
+							<select id="category_id" class="search">
+								<option value="">All Category</option>
+								<?php foreach ($Store->categories as $category) : ?>
+									<option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+								<?php endforeach ?>
+							</select>
 						</div>
 					</div>
 					<div class="card-body--">
@@ -72,6 +89,21 @@
 								</tbody>
 							</table>
 						</div> 
+					</div>
+					<div class="card__footer">
+						<div class="pagination">
+							<div class="pagination__left">
+								<i class="bi bi-chevron-left"></i>
+							</div>
+							<div class="pagination__page-info">
+								<ul>
+									<li class="active">1</li>
+								</ul>
+							</div>
+							<div class="pagination__right">
+								<i class="bi bi-chevron-right"></i>
+							</div>
+						</div>
 					</div>
 				</div> 
 			</div>

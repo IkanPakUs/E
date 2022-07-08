@@ -150,3 +150,29 @@ import * as api from './api.js';
         });
     });
 })();
+
+(function () {
+    const search_page = ["transaction", "user", "store"];
+
+    const page = $('.page')?.getAttribute('id');
+    const input = all('.search');
+
+    if (search_page.includes(page) && input.length > 0) {
+        input.forEach(el => {
+            el.addEventListener('change', async (e) => {
+                const list_input = all(`#${page} .search`);
+    
+                const qs = Array.from(list_input).map((v) => `${page}[${v.getAttribute('id')}]=${v.value}`).join("&");
+                const result = await api.getList(page, qs);
+                
+                if (result) {
+                    $('.table tbody').innerHTML = result;
+                } else {
+                    $('.table tbody').innerHTML = `<tr>
+                                                     <td colspan="6">Your search data not available, please use another keyword</td>
+                                                   </tr>`
+                }
+            });
+        });
+    }
+})();
