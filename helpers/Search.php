@@ -193,7 +193,7 @@ class Search
         }
 
         if ($products) {
-            if (isset($wishlist)) {
+            if (isset($wishlist) && $wishlist) {
                 $products = array_map(function($product) use($wishlist) {
                     $product['wishlist'] = in_array($product['id'], array_column($wishlist, 'product_id'));
                     
@@ -201,7 +201,7 @@ class Search
                 }, $products);
             }
 
-            if (isset($user_cart)) {
+            if (isset($user_cart) && $user_cart) {
                 $products = array_map(function($product) use($user_cart) {
                     $product["in_cart"] = in_array($product['id'], array_column($user_cart, 'product_id'));
                     
