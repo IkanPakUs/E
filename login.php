@@ -23,7 +23,6 @@
         <?php if(isset($_GET["message"])) : ?>
         <div class="alert alert-danger alert-dismissible fade show float-alert" role="alert">
             <?= $_GET["message"] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <?php endif ?>
         <div id="login" class="content">

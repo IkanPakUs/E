@@ -15,6 +15,8 @@ const deleteUserRegis = () => {
 
                 if (result) {
                     $(`tr[user_id="${user_id}"]`).remove();
+                } else {
+                    alert("You can't delete this user");
                 }
             }
         });

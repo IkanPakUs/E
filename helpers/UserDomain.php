@@ -11,6 +11,22 @@ class UserDomain
         $method = $request->method ?? $_POST["method"];
         $this->id = @$request->id;
 
+        if (isset($_SESSION["user"]) ) {
+            if ($_SESSION["user"]["role_id"] != 1) {
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    $return_des = 'location: ' . $_SERVER['HTTP_REFERER'];
+                } else {
+                    $return_des = 'location: ../index.php';
+                }
+            }
+
+            header(@$return_des);
+
+        } else {
+            header('location: ../login.php');
+        }
+
+
         switch ($method) {
             case 'delete':
                 $this->destroy();
@@ -45,11 +61,18 @@ class UserDomain
 
     public function update() {
         $id = $_POST['id'];
+        $user = @$_SESSION["user"];
+
+        if (isset($_POST["role_id"]) && @$_POST["role_id"] == 1) {
+            $set_user = DB::table('users')->find($id);
+
+            $role = $user["role_id"] == 1 ?  $_POST["role_id"] : $set_user["role_id"];
+        }
 
         $data = [
             "name" => $_POST["name"],
             "email" => $_POST["email"],
-            "role_id" => $_POST["role_id"],
+            "role_id" => @$role ?? $_POST["role_id"],
         ];
 
         if (isset($_POST["password"]) && $_POST["password"] != "") {
@@ -61,8 +84,18 @@ class UserDomain
 
     protected function destroy() {
         $id = $this->id;
+        $user = @$_SESSION["user"];
 
-        DB::table('users')->where('id', '=', $id)->delete();
+        if ($id != $user["id"]) {
+            DB::table('users')->where('id', '=', $id)->delete();
+            DB::table('user_spend')->where('user_id', '=', $id)->delete();
+            DB::table('user_detail')->where('user_id', '=', $id)->delete();
+
+            echo json_encode(["message" => "ok", "code" => 200]);
+        } else {
+            echo json_encode(["message" => "User Not Authorized", "code" => 403]);
+        }
+
     }
 }
 

@@ -106,7 +106,13 @@ const removeUser = (user_id) => {
         fetch(`../helpers/UserDomain.php`, {
             method: 'POST',
             body: JSON.stringify({'method': 'delete', 'id': user_id}),
-        }).then(() => {
+        }).then(async (res) => {
+            const result = await res.json().then(result => result);
+            
+            if ('code' in result) {
+                return result.code == 403 ? resolve(false) : resolve(true);
+            }
+
             return resolve(true);
         }).catch(err => console.log(err))
     });

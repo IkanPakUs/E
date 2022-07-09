@@ -40,36 +40,40 @@
 								<table class="table">
 									<tbody>
 										<tr>
-											<td>Code</td>
+											<td style="width: 25%;">Code</td>
 											<td>: <?= $Transaction->transactions["code"] ?></td>
 										</tr>
 										<tr>
-											<td>Transaction Created</td>
+											<td style="width: 25%;">Transaction Created</td>
 											<td>: <?= $Transaction->transactions["created_at"] ?></td>
 										</tr>
 										<tr>
-											<td>Transaction Updated</td>
+											<td style="width: 25%;">Transaction Updated</td>
 											<td>: <?= $Transaction->transactions["updated_at"] ?></td>
 										</tr>
 										<tr>
-											<td>User</td>
-											<td>: <?= $Transaction->transactions["user"]["name"] ?></td>
+											<td style="width: 25%;">User</td>
+											<td>: <?= @$Transaction->transactions["user"]["name"] ?? "Deleted User" ?></td>
 										</tr>
 										<tr>
-											<td>User Email</td>
-											<td>: <?= $Transaction->transactions["user"]["email"] ?></td>
+											<td style="width: 25%;">User Email</td>
+											<td>: <?= @$Transaction->transactions["user"]["email"] ?? "Deleted User" ?></td>
 										</tr>
 										<tr>
-											<td>Contact</td>
-											<td>: <?= $Transaction->transactions["address"]["phone_no"] ?></td>
+											<td style="width: 25%;">Contact</td>
+											<td>: <?= @$Transaction->transactions["address"]["phone_no"] ?? "Deleted User" ?></td>
 										</tr>
 										<tr>
-											<td>Status</td>
+											<td style="width: 25%;">Status</td>
 											<td>: <?= $Transaction->transactions["name"] ?></td>
 										</tr>
 										<tr>
-											<td>Address</td>
+											<td style="width: 25%;">Address</td>
+											<?php if (isset($Transaction->transactions["address"]["address"])) : ?>
 											<td>: <?= implode(", ", [$Transaction->transactions["address"]["address"], $Transaction->transactions["address"]["city"], $Transaction->transactions["address"]["postal_code"]]) ?></td>
+											<?php else : ?>
+											<td>: Deleted User</td>
+											<?php endif ?>
 										</tr>
 									</tbody>
 								</table>
@@ -87,7 +91,7 @@
 										<?php foreach ($Transaction->transactions["details"] as $key => $detail) : ?>
 										<tr>
 											<td><?= ++$key ?></td>
-											<td><?= $detail["name"] ?></td>
+											<td><?= @$detail["name"] ?? "Deleted Product" ?></td>
 											<td><?= $detail["quantity"] ?></td>
 											<td><?= $detail["subtotal"] ?></td>
 										</tr>

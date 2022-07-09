@@ -70,7 +70,7 @@
 									<tr transaction_id="<?= $transaction['id'] ?>">
 										<td class="serial"><?= $no++ ?></td>
 										<td><span class="name"><?= $transaction['code'] ?></span></td>
-										<td><span class="count"><?= $transaction['user_name'] ?></span></td>
+										<td><span class="count"><?= @$transaction['user_name'] ?? "Deleted User" ?></span></td>
 										<td><span class="transaction"><?= number_format($transaction['grand_total'], 0, 0, ',') ?></span></td>
 										<td><span class="count <?= $transaction['status_name'] ?>"><?= $transaction['status_name'] ?></span></td>
 										<td><span class="count"><?= $transaction['created_at'] ?></span></td>
