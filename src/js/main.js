@@ -327,7 +327,7 @@ const calculateSummary = () => {
                 $('.search').value = '';
                 const result = await api.productFilter('');
                 productAttach(result);
-    
+
                 localStorage.removeItem('name');
     
                 wishlistRegis();
@@ -339,11 +339,14 @@ const calculateSummary = () => {
 
 (function () {
     const el_search = $('.search');
+    const list = all('.category-list');
 
     if (el_search) {
         el_search.addEventListener("input", async () => {
             const search_value = el_search.value;
-    
+            
+            list.forEach((l, i) => i == 0 ? l.classList.add('active') : l.classList.remove('active'));
+
             const result = await api.productFilter(`filter=${search_value}`);
             productAttach(result);
     
