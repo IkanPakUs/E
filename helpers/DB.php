@@ -309,11 +309,11 @@ class DB {
     }
 
     protected static function dbConnect() {
-        $servername = "db";
-        $username = "root";
-        $password = "pemweb";
+        $servername = "db"; // Server host for database
+        $username = "root"; // Username for db
+        $password = "pemweb"; // Password for db
         
-        self::$dbname = $dbname = "WebApp";
+        self::$dbname = $dbname = "WebApp"; // Schema name
 
         $conn = new mysqli($servername, $username, $password, $dbname);
         $conn->set_charset('utf8');
