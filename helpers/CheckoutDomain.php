@@ -22,10 +22,9 @@ class CheckoutDomain
     }
 
     protected function saveTransaction() {
-        
         $code = "EU_" . substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTVWXYZ"), 0, 6) .  date("y");
         
-        $transaction_details = $this->getTransactionDetail($code);
+        $transaction_details = $this->getTransactionDetail();
         
         $user_id = $this->user["id"];
         $address_id = $this->address;
@@ -46,12 +45,24 @@ class CheckoutDomain
             "grand_total" => ceil($subtotal + $tax + $shipping_fee),
             "tax" => ceil($tax),
             "shipping_fee" => $shipping_fee,
-            "status" => $status,
+            "transaction_status_id" => $status,
         ];
 
         try {
             DB::table('transactions')->insert($transaction);
+            $transaction_id = DB::getLastId();
+
+            $transaction_details = array_map( function ($transaction_detail) use ($transaction_id) {
+                $transaction_detail['transaction_id'] = $transaction_id;
+
+                return $transaction_detail;
+            }, $transaction_details);
+
             DB::table('transaction_details')->insert($transaction_details);
+
+            $products_id = array_keys($this->products);
+
+            DB::table('products')->where('id', 'IN', '(' . implode(',', $products_id) . ')')->decrement('stock');
 
             DB::table('user_cart')->where('user_id', '=', $user_id)->delete();
             $_SESSION["cart"] = [];
@@ -62,11 +73,11 @@ class CheckoutDomain
         }
     }
 
-    protected function getTransactionDetail($code) {
+    protected function getTransactionDetail() {
         $products = $this->products;
         $data_product = DB::table('products')->select('id', 'price')->where('id', 'IN', '(' . implode(',', array_keys($products)) .')')->get();
 
-        $details = array_map( function ($product) use($code, $products, $data_product) {
+        $details = array_map( function ($product) use($products, $data_product) {
 
             $quantity = $products[$product]["quantity"];
 
@@ -74,7 +85,6 @@ class CheckoutDomain
             $subtotal = $data_product[$data_product_key]["price"] * $quantity;
 
             return [
-                "transaction_code" => $code,
                 "product_id" => $product,
                 "quantity" => $quantity,
                 "subtotal" => $subtotal,

@@ -58,7 +58,7 @@ class AnalyticDomain
     }
 
     public function getCountryOrder() {
-        $orderByCountry = DB::raw("SELECT user_detail.country as country_code, count(transactions.id) as total FROM transactions LEFT JOIN user_detail ON user_detail.id = transactions.address_id GROUP BY country_code")->fetch_all(MYSQLI_ASSOC);
+        $orderByCountry = DB::raw("SELECT user_addresses.country as country_code, count(transactions.id) as total FROM transactions LEFT JOIN user_addresses ON user_addresses.id = transactions.address_id GROUP BY country_code")->fetch_all(MYSQLI_ASSOC);
         echo json_encode(["status" => true, "data" => $orderByCountry]);
     }
 }

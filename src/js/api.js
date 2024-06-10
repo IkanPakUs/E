@@ -139,7 +139,7 @@ const getCountry = () => {
             const result = await res.json().then(result => result);
 
             if (result.status) {
-                const el = template.addModal(result.country);
+                const el = template.addModalAddress(result.country);
                 return resolve(el);
             }
             return resolve(false);
@@ -160,7 +160,7 @@ const saveAddress = (data) => {
             const result = await res.json().then(result => result);
 
             if (result.status) {
-                const el = template.modal(result.data);
+                const el = template.addressModal(result.data);
                 return resolve(el);
             }
             return resolve(false);
@@ -177,7 +177,7 @@ const getAddress = () => {
             const result = await res.json().then(result => result);
 
             if (result.status) {    
-                const el = template.modal(result.data);
+                const el = template.addressModal(result.data);
                 return resolve(el);
             }
             return resolve(false);
@@ -199,6 +199,28 @@ const editAddress = (address_id) => {
             return resolve(false);
         }).catch(err => console.log(err));
     });
+}
+
+const deleteAddress = (address_id) => {
+    return new Promise(resolve => {
+        fetch(`helpers/AddressDomain.php`, {
+            method: 'POST',
+            body: JSON.stringify({
+                'method': 'deleteAddress',
+                'payload': JSON.stringify({ address_id })
+            })
+        }).then(async (res) => {
+            const result = await res.json().then(result => result);
+
+            if (result.status) {
+                const el = template.addressModal(result.data);
+                return resolve(el);
+            }
+
+            return resolve(false);
+
+        }).catch(err => console.log(err));
+    })
 }
 
 const getUsersGrowth = () => {
@@ -282,4 +304,4 @@ const getList = (page, qs) => {
     });
 }
 
-export {productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, getUsersGrowth, getOrderGrowth, getCountryOrder, getList};
+export {productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, deleteAddress, getUsersGrowth, getOrderGrowth, getCountryOrder, getList};

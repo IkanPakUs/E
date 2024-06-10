@@ -88,8 +88,7 @@ class UserDomain
 
         if ($id != $user["id"]) {
             DB::table('users')->where('id', '=', $id)->delete();
-            DB::table('user_spend')->where('user_id', '=', $id)->delete();
-            DB::table('user_detail')->where('user_id', '=', $id)->delete();
+            DB::table('user_addresses')->where('user_id', '=', $id)->delete();
 
             echo json_encode(["message" => "ok", "code" => 200]);
         } else {

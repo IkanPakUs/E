@@ -62,6 +62,7 @@
 										<th class="serial">#</th>
 										<th>Name</th>
 										<th>Price</th>
+										<th>Stock</th>
 										<th>Category</th>
 										<th>Action</th>
 									</tr>
@@ -72,7 +73,8 @@
 									<tr product_id="<?= $product['product_id'] ?>">
 										<td class="serial"><?= $no++ ?></td>
 										<td><span class="name"><?= $product['name'] ?></span></td>
-										<td><span class="product"><?= number_format($product['price'], 0, 0, ',') ?></span></td>
+										<td><span class="product">IDR <?= number_format($product['price'], 0, 0, ',') ?></span></td>
+										<td><span class="product"><?= number_format($product['stock'], 0, 0, ',') ?></span></td>
 										<td><span class="count"><?= $product['category_name'] ?></span></td>
 										<td>
 											<a href="form-product.php?id=<?= $product['product_id'] ?>">Edit</a> 

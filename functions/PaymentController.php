@@ -7,7 +7,7 @@ class PaymentController
     public function __construct()
     {
         $code = $_GET["code"];
-        $transaction = DB::table('transactions')->where('code', '=', $code)->leftJoin("transaction_statuses", "transaction_statuses.id", "=", "transactions.status")->get()[0];
+        $transaction = DB::table('transactions')->select('transactions.*', 'transaction_statuses.name')->where('code', '=', $code)->leftJoin("transaction_statuses", "transaction_statuses.id", "=", "transactions.transaction_status_Id")->get()[0];
 
         if (!$transaction) {
             header('location: catalog.php');

@@ -2,6 +2,7 @@
 
 :root {
     --primary-color: #e8e2da;
+	--primary-text-color: #8f887f;
     --relative-primary-color: #F3F3F3;
     --secondary-color: #2F2F2F;
     --white-text: #fff;
@@ -911,13 +912,39 @@ a {
     box-shadow: none;
 }
 
-#shopping-cart .list-cart {
+#shopping-cart .list-cart,
+#shopping-cart .oo-cart {
     width: 780px;
 }
 
 #shopping-cart .header {
     display: flex;
     padding-bottom: 25px;
+}
+
+#shopping-cart .oo-cart .header {
+    width: 100%;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#shopping-cart .oo-cart .oo-backdrop {
+    background-color: #bbb;
+    opacity: 0.5;
+    width: 120px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 100;
+}
+
+#shopping-cart .oo-cart .cart__product .title,
+#shopping-cart .oo-cart .cart__quantity,
+#shopping-cart .oo-cart .cart__subtotal  {
+    color: #bbb;
 }
 
 #shopping-cart .cart__product {
@@ -1293,6 +1320,25 @@ a {
     width: 255px;
     overflow: hidden;
     max-height: 375px;
+}
+
+#wishlist .product .backdrop {
+    background-color: var(--secondary-color);
+    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--relative-primary-color);
+    position: absolute;
+    z-index: 100;
+}
+
+#wishlist .product .backdrop span {
+    font-size: 20px;
+    font-weight: bold;
+    rotate: -35deg;
 }
 
 #wishlist .product .info {

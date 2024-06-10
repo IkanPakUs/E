@@ -82,14 +82,14 @@
                     </div>
                     <div class="summary-action">
                         <form action="helpers/TransactionDomain.php" method="post">
-                            <input type="hidden" name="code" value="<?= $Payment->code ?>">
-                            <?php if(!in_array($Payment->transaction["status"], [3, 4])) : ?>
+                            <input type="hidden" name="id" value="<?= $Payment->transaction['id'] ?>">
+                            <?php if(!in_array($Payment->transaction["transaction_status_id"], [3, 4])) : ?>
                             <button type="submit" name="action" value="cancel" class="cancel">Cancel Order</button>
                             <?php endif ?>
-                            <?php if(!in_array($Payment->transaction["status"], [2, 3, 4])) : ?>
+                            <?php if(!in_array($Payment->transaction["transaction_status_id"], [2, 3, 4])) : ?>
                             <button type="submit" name="action" value="waiting" class="paid">I Already Paid</button>
                             <?php endif ?>
-                            <?php if(!in_array($Payment->transaction["status"], [1])) : ?>
+                            <?php if(!in_array($Payment->transaction["transaction_status_id"], [1])) : ?>
                             <div class="status-order <?= $Payment->transaction["name"] ?>">
                                 Status : <span><?= $Payment->transaction["name"] ?></span>
                             </div>

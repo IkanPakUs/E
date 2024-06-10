@@ -2,33 +2,34 @@
 
 class CartController
 {
-    public $user, $role, $cart_list, $address, $address_list, $summary;
+    public $user, $role, $cart_list, $oo_stock, $address, $address_list, $summary;
 
     public function __construct() {
 
         $user = @$_SESSION['user'];
 
-        if (isset($user)) {        
-
-            $cart_list = DB::table('user_cart')->where('user_id', '=', $user["id"])->leftJoin("products", "products.id", "=", "user_cart.product_id")->get();
+        if (isset($user)) {
+            $cart_list = DB::table('user_cart')->select('products.*', 'user_cart.quantity', 'user_cart.subtotal')->where('user_id', '=', $user["id"])->leftJoin("products", "products.id", "=", "user_cart.product_id")->where('products.stock', '>', 0)->get();
+            $oo_stock = DB::table('user_cart')->select('products.*', 'user_cart.quantity', 'user_cart.subtotal')->where('user_id', '=', $user["id"])->leftJoin("products", "products.id", "=", "user_cart.product_id")->where('products.stock', '=', 0)->get();
 
             $this->user = $user;
             $this->role = $user["role_id"];
             $this->cart_list = $cart_list;
+            $this->oo_stock = $oo_stock;
         }
     }
 
     public function getAddressDetail() {
         $user = $_SESSION['user'];
 
-        $address = DB::table('user_detail')->where('user_id', '=', $user['id'])->where('is_main', '=', 1)->get();
+        $address = DB::table('user_addresses')->where('user_id', '=', $user['id'])->where('is_main', '=', 1)->get();
         $this->address = @$address[0];
     }
 
     public function getAddressList() {
         $user = $_SESSION['user'];
 
-        $address_list = DB::table('user_detail')->where('user_id', '=', $user['id'])->get();
+        $address_list = DB::table('user_addresses')->where('user_id', '=', $user['id'])->get();
         $this->address_list = $address_list;
     }
 

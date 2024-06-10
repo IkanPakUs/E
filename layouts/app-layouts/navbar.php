@@ -58,7 +58,7 @@
                                         <h5><?= $cart["name"] ?></h5>
                                     </div>
                                     <div class="right_side__cart-remove">
-                                        <a class="btn-close remove-cart" product_id="<?= $cart["product_id"] ?>"></a>
+                                        <a class="btn-close remove-cart" product_id="<?= $cart["id"] ?>"></a>
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +79,8 @@
             <?php if(isset($NavData->user)) : ?>
             <i class="bi bi-person" data-bs-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu">
-                <li><label>Role :
-                        <?= $NavData->role == 1 ? "admin" : "member" ?>
+                <li><label>
+                        <?= $NavData->user['name'] ?>
                     </label></li>
                 <hr>
                 <li><a href="functions/logout.php">Log out</a></li>

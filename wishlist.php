@@ -38,7 +38,13 @@
                     <?php foreach ($Wishlist->wishlist as $key => $product) : ?>
                     <div class="product" id="wishlist_<?= $product['product_id'] ?>">
                         <div class="img-wrapper">
+                            <?php if ($product['stock'] == 0) : ?>
+                                <div class="backdrop">
+                                    <span>Out of stock</span>
+                                </div>
+                            <?php endif ?>
                             <img src="<?= $_SESSION ["root_path"] . "src/img/product/" . $product["image_url"] ?>" alt="wishlist" loading="lazy">
+                            <?php if ($product['stock'] > 0) : ?>
                             <div class="wrapper__action">
                                 <a class="wishlist">
                                     <i class="bi wish-btn bi-heart-fill fill-btn" product_id="<?= $product['product_id'] ?>"></i>
@@ -47,6 +53,7 @@
                                     <i class="bi cart-btn <?= $Wishlist->isInCart($product["product_id"]) ? 'bi-cart-check-fill' : 'bi-cart-plus' ?>" product_id="<?= $product['product_id'] ?>"></i>
                                 </a>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <div class="info">
                             <div class="title">

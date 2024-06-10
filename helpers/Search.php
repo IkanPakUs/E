@@ -25,7 +25,7 @@ class Search
         $offset = ($_GET["meta"]["page"] * $limit) - $limit;
 
         $transactions = DB::table('transactions')
-                          ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.status', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name');
+                          ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.transaction_status_id', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name');
         
         foreach ($parameter_search as $key => $value) {
             if (in_array($key, $like_search)) {
@@ -36,7 +36,7 @@ class Search
         }
 
         $transactions = $transactions->leftJoin('users', 'users.id', '=', 'transactions.user_id')
-                                     ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.status')
+                                     ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.transaction_status_id')
                                      ->orderBy('transactions.created_at', 'DESC')
                                      ->limit($limit)->offset($offset)
                                      ->get();

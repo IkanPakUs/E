@@ -64,11 +64,11 @@
                                 Setting address
                             </button>
 
-                            <div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="change-address-modal" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Address Setting</h5>
+                                            <h5 class="modal-title" id="change-address">Address Setting</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -96,6 +96,10 @@
                                                         <span></span>
                                                         <a href="#" class="select-address" address_id="<?= $address["id"] ?>">Select this address</a>
                                                         <?php endif ?>
+                                                        <?php if (!$address["is_main"]) : ?>
+                                                        <span></span>
+                                                        <a href="#" class="delete-address" address_id="<?= $address["id"] ?>">Delete</a>
+                                                        <?php endif ?>
                                                     </div>
                                                 </div>
                                                 <?php endforeach ?>
@@ -116,8 +120,8 @@
                             <h5 class="cart__subtotal">Subtotal</h5>
                         </div>
                         <?php foreach ($Cart->cart_list as $cart) : ?>
-                        <div class="body card-cart" product_id="<?= $cart["product_id"] ?>">
-                            <input type="hidden" class="input-product" id="product_input_<?= $cart['product_id'] ?>" name="product_cart[<?= $cart['product_id'] ?>][quantity]" value="<?= $cart['quantity'] ?>"> 
+                        <div class="body card-cart" product_id="<?= $cart["id"] ?>">
+                            <input type="hidden" class="input-product" id="product_input_<?= $cart["id"] ?>" name="product_cart[<?= $cart["id"] ?>][quantity]" value="<?= $cart['quantity'] ?>"> 
                             
                             <div class="cart__product cart__product-info">
                                 <div class="product__img-wrap">
@@ -127,11 +131,11 @@
                                     <div class="title"><?= $cart["name"] ?></div>
                                     <div class="right__action-btn">
                                         <a href="#" class="wish-link wishlist">
-                                            <i class="bi wish-btn <?= $Cart->isWishlist($cart["product_id"]) ? 'bi-heart-fill fill-btn' : 'bi-heart love-btn' ?>" product_id="<?= $cart["product_id"] ?>"></i>
+                                            <i class="bi wish-btn <?= $Cart->isWishlist($cart["id"]) ? 'bi-heart-fill fill-btn' : 'bi-heart love-btn' ?>" product_id="<?= $cart["id"] ?>"></i>
                                         </a>
                                         <span></span>
                                         <div class="remove-btn">
-                                            <i class="bi bi-trash3 remove-cart" product_id="<?= $cart["product_id"] ?>"></i>
+                                            <i class="bi bi-trash3 remove-cart" product_id="<?= $cart["id"] ?>"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -139,16 +143,16 @@
                             <div class="cart__quantity">
                                 <div class="total-btn">
                                     <div class="down-btn">
-                                        <i class="bi bi-dash-circle min-btn" product_id="<?= $cart["product_id"] ?>"></i>
+                                        <i class="bi bi-dash-circle min-btn" product_id="<?= $cart["id"] ?>"></i>
                                     </div>
-                                    <span id="quantity_<?= $cart["product_id"] ?>" product_id="<?= $cart["product_id"] ?>"><?= $cart["quantity"] ?></span>
+                                    <span id="quantity_<?= $cart["id"] ?>" product_id="<?= $cart["id"] ?>"><?= $cart["quantity"] ?></span>
                                     <div class="up-btn">
-                                        <i class="bi bi-plus-circle max-btn" product_id="<?= $cart["product_id"] ?>"></i>
+                                        <i class="bi bi-plus-circle max-btn" product_id="<?= $cart["id"] ?>"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="cart__subtotal">
-                                <div class="price" id="price_<?= $cart["product_id"] ?>" price="<?= $cart["price"] ?>">Rp. <?= number_format($cart["subtotal"], 0, 0, ',') ?></div>
+                                <div class="price" id="price_<?= $cart["id"] ?>" price="<?= $cart["price"] ?>">Rp. <?= number_format($cart["subtotal"], 0, 0, ',') ?></div>
                             </div>
                         </div>
                         <?php endforeach ?>
@@ -158,6 +162,43 @@
                                 <span>You can click cart button in product box</span>
                             </div>
                         <?php endif ?>
+                    </div>
+                    <div class="oo-cart">
+                        <?php if ($Cart->oo_stock) : ?>
+                        <div class="header">
+                            <?= count($Cart->oo_stock) . " Can't be process" ?>
+                        </div>
+                        <?php endif; ?>
+                        <?php foreach ($Cart->oo_stock as $cart) : ?>
+                        <div class="body card-cart oo-stock" product_id="<?= $cart["id"] ?>">                            
+                            <div class="cart__product cart__product-info">
+                                <div class="product__img-wrap">
+                                    <div class="oo-backdrop"></div>
+                                    <img src="<?= $_SESSION ["root_path"] . "src/img/product/" . $cart["image_url"] ?>">
+                                </div>
+                                <div class="product__right-side">
+                                    <div class="title"><?= $cart["name"] ?></div>
+                                    <div class="right__action-btn">
+                                        <a href="#" class="wish-link wishlist">
+                                            <i class="bi wish-btn <?= $Cart->isWishlist($cart["id"]) ? 'bi-heart-fill fill-btn' : 'bi-heart love-btn' ?>" product_id="<?= $cart["id"] ?>"></i>
+                                        </a>
+                                        <span></span>
+                                        <div class="remove-btn">
+                                            <i class="bi bi-trash3 remove-cart" product_id="<?= $cart["id"] ?>"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cart__quantity">
+                                <div class="total-btn">
+                                    <span id="quantity_<?= $cart["id"] ?>" product_id="<?= $cart["id"] ?>"><?= $cart["quantity"] ?></span>
+                                </div>
+                            </div>
+                            <div class="cart__subtotal">
+                                <div class="price" id="price_<?= $cart["id"] ?>" price="<?= $cart["price"] ?>">Rp. <?= number_format($cart["subtotal"], 0, 0, ',') ?></div>
+                            </div>
+                        </div>
+                        <?php endforeach ?>
                     </div>
                 </div>
                 <div class="content__right">
@@ -187,7 +228,7 @@
                             </div>
                         </div>
                         <div class="checkout-btn">
-                            <button class="btn proceed-btn" type="submit" <?= $Cart->cart_list && isset($Cart->address) ? "" : "disabled" ?>>Proceed Order</button>
+                            <button class="btn proceed-btn" type="submit" <?= count($Cart->cart_list) && isset($Cart->address) ? "" : "disabled" ?>>Proceed Order</button>
                         </div>
                     </div>
                 </div>

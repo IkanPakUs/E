@@ -1,8 +1,9 @@
 <?php
 
 class DB {
+    private static $conn, $dbname;
 
-    public static $table, $select_column, $where_clause = [], $limit, $offset, $left_join = [], $conn, $dbname, $order_by;
+    protected static $table, $select_column, $where_clause = [], $limit, $offset, $left_join = [], $order_by, $group_by;
 
     public static function table($table) {
         self::$table = $table;
@@ -60,6 +61,12 @@ class DB {
         return new static();
     }
 
+    public static function groupBy($column) {
+        self::$group_by = $column;
+
+        return new static();
+    }
+
     public static function raw($sql) {
         self::dbConnect();
         $conn = self::$conn;
@@ -69,21 +76,38 @@ class DB {
         return $result;
     }
 
-    public static function count() {
+    public static function getLastId()
+    {
+        $conn = self::$conn;
+
+        $last_id = $conn->insert_id;
+
+        return $last_id;
+    }
+
+    public static function count($column = null, $as_column = null) {
         $conn = self::$conn;
         $table = self::$table;
-        $where_clause = self::$where_clause;
+
+        $column = $column ? $column : 'id';
+        $as_column = $as_column ? $as_column : 'count';
 
         self::queryValidator();
 
-        $sql = "SELECT COUNT(id) as count FROM " . $table;
+        $sql = "SELECT COUNT($column) as $as_column FROM $table";
 
-        if (count($where_clause) > 0) {
-            $sql .= self::setupWhereClause();
-        }
+        $sql .= self::setupWhereClause();
 
         $result = $conn->query($sql);
         self::format();
+
+        if (!$result) {
+            echo "<br> ========= Error ========= <br><br>";
+            echo "Exception $conn->error <br>";
+            echo "On $sql";
+            echo "<br><br> ====================== <br>";
+            die;
+        };
 
         return $result->fetch_all(MYSQLI_ASSOC)[0]["count"];
     }
@@ -91,18 +115,23 @@ class DB {
     public static function sum($column) {
         $conn = self::$conn;
         $table = self::$table;
-        $where_clause = self::$where_clause;
 
         self::queryValidator();
 
-        $sql = "SELECT SUM(" . $column . ") as total FROM " . $table;
+        $sql = "SELECT SUM($column) as total FROM $table";
 
-        if (count($where_clause) > 0) {
-            $sql .= self::setupWhereClause();
-        }
+        $sql .= self::setupWhereClause();
 
         $result = $conn->query($sql);
         self::format();
+
+        if (!$result) {
+            echo "<br> ========= Error ========= <br><br>";
+            echo "Exception $conn->error <br>";
+            echo "On $sql";
+            echo "<br><br> ====================== <br>";
+            die;
+        };
 
         return $result->fetch_all(MYSQLI_ASSOC)[0]["total"];
     }
@@ -137,22 +166,22 @@ class DB {
                 return "'" . $column . "'";
             }, $column_add));
 
-            $value = " ( " . $value . " )";
+            $value = " ($value)";
         }  else {
             $column = implode(", ", array_keys($column_add[0]));
 
             $value = array_map( function($row) {
                 $value_string = implode(", ", array_map( function($column) {
-                    return "'" . $column . "'";
+                    return "'$column'";
                 }, $row));
 
-                return " ( " . $value_string . " )";
+                return " ($value_string)";
             }, $column_add);
 
             $value = implode(", ", $value);
         }
 
-        $sql = "INSERT INTO " . $table . " ( " . $column . " ) VALUES" . $value;
+        $sql = "INSERT INTO $table ($column) VALUES $value";
 
         self::format();
 
@@ -175,7 +204,7 @@ class DB {
 
         $where_clause = self::setupWhereClause();
 
-        $sql = "UPDATE " . $table . " SET " . $columns . $where_clause;
+        $sql = "UPDATE $table SET $columns $where_clause";
 
         self::format();
 
@@ -191,7 +220,23 @@ class DB {
 
         self::queryValidator();
 
-        $sql = "DELETE FROM " . $table . $where_clause;
+        $sql = "DELETE FROM $table $where_clause";
+
+        self::format();
+
+        if ($conn->query($sql) !== TRUE) {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+
+    public static function decrement($column, $count = 1) {
+        $conn = self::$conn;
+        $table = self::$table;
+        $where_clause = self::setupWhereClause();
+
+        self::queryValidator();
+
+        $sql = "UPDATE $table SET $column = $column - $count $where_clause";
 
         self::format();
 
@@ -204,41 +249,23 @@ class DB {
         $conn = self::$conn;
         $table = self::$table;
         $select_column = isset(self::$select_column) ? implode(", ", self::$select_column) : "*";
-        $left_join = self::$left_join;
-        $where_clause = self::$where_clause;
-        $order_by = self::$order_by;
-        $limit = self::$limit;
-        $offset = self::$offset;
 
         self::queryValidator();
 
-        $sql = "SELECT " . $select_column . " FROM " . $table;
-
-        if (count($left_join) > 0) {
-            foreach ($left_join as $join) {
-                $sql .= " LEFT JOIN " . $join['table'] . " ON " . $join['first'] . " " . $join['operator'] . " " . $join['second'];
-            }
-        }
-
-        if (count($where_clause) > 0) {
-            $sql .= self::setupWhereClause();
-        }
-
-        if (isset($order_by)) {
-            $sql .= " ORDER BY " . $order_by;
-        }
-
-        if (isset($limit)) {
-            $sql .= " LIMIT " . $limit;
-        }
-
-        if (isset($offset)) {
-            $sql .= " OFFSET " . $offset;
-        }
-
+        $sql = "SELECT $select_column FROM $table";
+        
+        $sql .= self::setupWhereClause();
+        
         $result = $conn->query($sql);
-
         self::format();
+
+        if (!$result) {
+            echo "<br> ========= Error ========= <br><br>";
+            echo "Exception $conn->error <br>";
+            echo "On $sql";
+            echo "<br><br> ====================== <br>";
+            die;
+        };
 
         if ($result) {
             if ($result->num_rows > 0) {
@@ -246,11 +273,24 @@ class DB {
             }
         }
 
-        return false;
+        return [];
     }
 
     protected static function setupWhereClause() {
         $where_clause = self::$where_clause;
+        $order_by = self::$order_by;
+        $group_by = self::$group_by;
+        $limit = self::$limit;
+        $offset = self::$offset;
+        $left_join = self::$left_join;
+
+        $sql = "";
+
+        if (count($left_join) > 0) {
+            foreach ($left_join as $join) {
+                $sql .= " LEFT JOIN {$join['table']} ON {$join['first']} {$join['operator']} {$join['second']}";
+            }
+        }
 
         $where_clause = array_map( function($key, $value) {
             $sql = "";
@@ -267,7 +307,25 @@ class DB {
             
         } , array_keys($where_clause), $where_clause);
         
-        $sql = " WHERE " . implode(" ", $where_clause);
+        if (count($where_clause)) {
+            $sql .= " WHERE " . implode(" ", $where_clause);
+        }
+
+        if (isset($group_by)) {
+            $sql .= " GROUP BY $group_by";
+        }
+
+        if (isset($order_by)) {
+            $sql .= " ORDER BY $order_by";
+        }
+
+        if (isset($limit)) {
+            $sql .= " LIMIT $limit";
+        }
+
+        if (isset($offset)) {
+            $sql .= " OFFSET $offset";
+        }
 
         return $sql;
     }
@@ -294,7 +352,7 @@ class DB {
         $conn = self::$conn;
         $dbname = self::$dbname;
 
-        $sql = "SHOW TABLES FROM " . $dbname;
+        $sql = "SHOW TABLES FROM $dbname";
         if (!isset($conn)) {
             self::dbConnect();
         }
@@ -311,16 +369,17 @@ class DB {
     protected static function dbConnect() {
         $servername = "db"; // Server host for database
         $username = "root"; // Username for db
-        $password = "pemweb"; // Password for db
+        $password = "ikanpakus"; // Password for db
         
-        self::$dbname = $dbname = "WebApp"; // Schema name
+        self::$dbname = $dbname = "docker_db"; // Schema name
 
         $conn = new mysqli($servername, $username, $password, $dbname);
         $conn->set_charset('utf8');
         self::$conn = $conn;
 
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            echo "<br> ========= Error ========= <br><br> Connection Failed : $conn->error <br><br> ====================== <br>";
+            die;
         }
 
     }
@@ -330,7 +389,10 @@ class DB {
         self::$select_column = null;
         self::$where_clause = [];
         self::$limit = null;
+        self::$offset = null;
         self::$left_join = [];
+        self::$order_by = null;
+        self::$group_by = null;
     }
 
 }

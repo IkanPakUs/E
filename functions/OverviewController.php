@@ -7,16 +7,19 @@ class OverviewController
     public function __construct()
     {
         $this->transactions = DB::table('transactions')
-                                ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.status as status_name', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name')
+                                ->select('transactions.id', 'transactions.code', 'transactions.user_id as user_name', 'transactions.grand_total', 'transactions.created_at','users.name as user_name', 'transaction_statuses.name as status_name')
                                 ->leftJoin('users', 'users.id', '=', 'transactions.user_id')
-                                ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.status')
+                                ->leftJoin('transaction_statuses', 'transaction_statuses.id', '=', 'transactions.transaction_status_id')
                                 ->orderBy("created_at", "DESC")
                                 ->limit(5)
                                 ->get();
 
 
-        $this->members = DB::table('user_spend')
-                          ->leftJoin('users', 'users.id', '=', 'user_spend.user_id')
+        $this->members = DB::table('transactions')
+                          ->select('users.name as name', 'SUM(grand_total) as spend', 'users.created_at')
+                          ->leftJoin('users', 'users.id', '=', 'transactions.user_id')
+                          ->where('transactions.transaction_status_id', '=', 3)
+                          ->groupBy('user_id')
                           ->orderBy("spend", "DESC")
                           ->limit(5)
                           ->get();
@@ -32,17 +35,18 @@ class OverviewController
                       ->where('role_id', '!=', 1)
                       ->count();
 
-        $ov_sales = DB::table('transaction_details')
+        $ov_sales = DB::table('transactions')
+                      ->where('transaction_status_id', '=', 3)
                       ->where('created_at', '>=', date('Y-m-01'))
                       ->where('created_at', '<=', date('Y-m-t'))
-                      ->where('status', '=', 3)
-                      ->sum('subtotal');
+                      ->sum('grand_total');
         
         $ov_product = DB::table('transaction_details')
-                      ->where('created_at', '>=', date('Y-m-01'))
-                      ->where('created_at', '<=', date('Y-m-t'))
-                      ->where('status', '=', 3)
-                      ->count();
+                      ->leftJoin('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
+                      ->where('transaction_details.created_at', '>=', date('Y-m-01'))
+                      ->where('transaction_details.created_at', '<=', date('Y-m-t'))
+                      ->where('transactions.transaction_status_id', '=', 3)
+                      ->count('transactions.id');
 
         $this->overview = [
             "ov_order" => $ov_order,
@@ -67,16 +71,18 @@ class OverviewController
                     ->count() ?? 0;
 
         $ls_sales = DB::table('transaction_details')
-                    ->where('created_at', '>=', date_create("-1 month")->format('Y-m-01'))
-                    ->where('created_at', '<=', date_create("-1 month")->format('Y-m-t'))
-                    ->where('status', '=', 3)
+                    ->leftJoin('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
+                    ->where('transaction_details.created_at', '>=', date_create("-1 month")->format('Y-m-01'))
+                    ->where('transaction_details.created_at', '<=', date_create("-1 month")->format('Y-m-t'))
+                    ->where('transactions.transaction_status_id', '=', 3)
                     ->sum('subtotal') ?? 0;
         
         $ls_product = DB::table('transaction_details')
-                    ->where('created_at', '>=', date_create("-1 month")->format('Y-m-01'))
-                    ->where('created_at', '<=', date_create("-1 month")->format('Y-m-t'))
-                    ->where('status', '=', 3)
-                    ->count() ?? 0;
+                    ->leftJoin('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
+                    ->where('transaction_details.created_at', '>=', date_create("-1 month")->format('Y-m-01'))
+                    ->where('transaction_details.created_at', '<=', date_create("-1 month")->format('Y-m-t'))
+                    ->where('transactions.transaction_status_id', '=', 3)
+                    ->count('transaction_details.id') ?? 0;
 
         $this->ls_overview = [
             "ls_order" => [

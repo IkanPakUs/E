@@ -23,13 +23,13 @@ li {
 	--blue: #3C91E6;
 	--blue-light: #66b3ff;
 	--grey: #eee;
-	--dark-grey: #AAAAAA;
+	--dark-grey: #626262;
 	--dark: #342E37;
 	--red: #DB504A;
 	--red-light: #FF8484;
 	--yellow: #FFCE26;
 	--green: #8ff83a;
-	--green-dark: #7ff022;
+	--green-dark: #00d352;
 	--orange: #FD7238;
 
 	--light-blue: #CFE8FF;
@@ -38,6 +38,7 @@ li {
 	--light-green: #e7ffd3;
 
 	--primary-color: #e8e2da;
+	--primary-text-color: #8f887f;
     --relative-primary-color: #F3F3F3;
     --secondary-color: #2F2F2F;
     --white-text: #fff;
@@ -72,24 +73,28 @@ body {
 }
 
 .pending {
+	color: #fff;
 	padding: 2px 7px;
 	background-color: var(--yellow);
 	border-radius: 10px;
 }
 
 .waiting.confirm {
+	color: #fff;
 	padding: 2px 7px;
 	background-color: var(--blue-light);
 	border-radius: 10px;
 }
 
 .success {
+	color: #fff;
 	padding: 2px 7px;
 	background-color: var(--green-dark);
 	border-radius: 10px;
 }
 
 .cancel {
+	color: #fff;
 	padding: 2px 7px;
 	background-color: var(--red-light);
 	border-radius: 10px;
@@ -198,7 +203,7 @@ body {
 
 #sidebar .side-menu.top li a:hover {
 	font-weight: 800;
-	color: var(--primary-color)
+	color: var(--primary-text-color)
 }
 
 #sidebar .side-menu li a .bx {
@@ -251,7 +256,6 @@ body {
 	background-color: var(--white-text);
 	background-clip: border-box;
 	box-sizing: border-box;
-	margin-right: 45px;
 }
 
 #table-content .card .card-body {
@@ -684,7 +688,7 @@ body {
 
 /* STORE */
 #store #table-content .card {
-	width: 80%;
+	width: 100%;
 }
 
 #store #table-content .card .card-body{
@@ -751,7 +755,7 @@ body {
 
 /* Transaction */
 #transaction #table-content .card {
-	width: 90%;
+	width: 100%;
 }
 
 /* Detail Transaction */
@@ -766,7 +770,7 @@ body {
 	padding: 5px 10px;
 	margin: 0px 10px;
 	font-weight: bold;
-	color: var(--primary-color);
+	color: var(--primary-text-color);
 	transition: all 0.2s ease-in-out;
 }
 
@@ -790,7 +794,7 @@ body {
 
 /* User */
 #user #table-content .card {
-	width: 60%;
+	width: 100%;
 }
 
 #user #table-content .card .card-body{

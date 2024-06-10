@@ -35,8 +35,8 @@ class StoreDomain
     public function create() {
         $data = [
             "name" => $_POST["name"],
-            "description" => $_POST["desc"],
             "price" => $_POST["price"],
+            "stock" => $_POST["stock"],
             "image_url" => $_FILES["image"]["name"],
             "category_id" => $_POST["category"]
         ];
@@ -53,8 +53,8 @@ class StoreDomain
 
         $data = [
             "name" => $_POST["name"],
-            "description" => $_POST["desc"],
             "price" => $_POST["price"],
+            "stock" => $_POST["stock"],
             "category_id" => $_POST["category"]
         ];
 
@@ -73,6 +73,8 @@ class StoreDomain
         $id = $this->id;
 
         DB::table('products')->where('id', '=', $id)->delete();
+        DB::table('user_cart')->where('product_id', '=', $id)->delete();
+        DB::table('user_wishlist')->where('product_id', '=', $id)->delete();
     }
 
     protected function imageUpload($action = null) {

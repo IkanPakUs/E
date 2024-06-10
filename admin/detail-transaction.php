@@ -4,7 +4,7 @@
     require_once('../functions/TransactionController.php');
 	$Transaction = new TransactionController;
 	$Transaction->show();
-
+	
 	$transaction_active = "active";
     $page_title = "Transaction";
 	$menu = ["Transaction" => "transaction.php", "Detail" => "detail-transaction.php"];
@@ -93,39 +93,39 @@
 											<td><?= ++$key ?></td>
 											<td><?= @$detail["name"] ?? "Deleted Product" ?></td>
 											<td><?= $detail["quantity"] ?></td>
-											<td><?= $detail["subtotal"] ?></td>
+											<td><?= number_format($detail["subtotal"]) ?></td>
 										</tr>
 										<?php endforeach; ?>
 									</tbody>
 									<tbody style="border-top: 1px solid var(--primary-color);">
 										<tr>
 											<td colspan="3" style="text-align: right;" >Subtotal :</td>
-											<td><?= $Transaction->transactions["grand_total"] - ($Transaction->transactions["tax"] + $Transaction->transactions["shipping_fee"]) ?></td>
+											<td><?= number_format($Transaction->transactions["grand_total"] - ($Transaction->transactions["tax"] + $Transaction->transactions["shipping_fee"])) ?></td>
 										</tr>
 										<tr>
 											<td colspan="3" style="text-align: right;" >Tax :</td>
-											<td><?= $Transaction->transactions["tax"] ?></td>
+											<td><?= number_format($Transaction->transactions["tax"]) ?></td>
 										</tr>
 										<tr>
 											<td colspan="3" style="text-align: right;" >Shipping fee :</td>
-											<td><?= $Transaction->transactions["shipping_fee"] ?></td>
+											<td><?= number_format($Transaction->transactions["shipping_fee"]) ?></td>
 										</tr>
 										<tr>
 											<td colspan="3" style="text-align: right;" >Grandtotal :</td>
-											<td><?= $Transaction->transactions["grand_total"] ?></td>
+											<td><?= number_format($Transaction->transactions["grand_total"]) ?></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 							<div class="action-btn">
 								<form action="../helpers/TransactionDomain.php" method="post">
-									<input type="hidden" name="code" value="<?= $Transaction->transactions["code"] ?>">
+									<input type="hidden" name="id" value="<?= $Transaction->transactions["id"] ?>">
 									
 									<a href="transaction.php">Back to transaction</a>
-									<?php if(!in_array($Transaction->transactions["status"],[3, 4])) : ?>
+									<?php if(!in_array($Transaction->transactions["transaction_status_id"],[3, 4])) : ?>
 									<button type="submit" name="action" value="cancel" class="btn cancel-btn">Cancel</button>
 									<?php endif ?>
-									<?php if($Transaction->transactions["status"] == 2) : ?>
+									<?php if($Transaction->transactions["transaction_status_id"] == 2) : ?>
 									<button type="submit" name="action" value="confirm" class="btn confirm-btn">Confirm</button>
 									<?php endif ?>
 								</form>

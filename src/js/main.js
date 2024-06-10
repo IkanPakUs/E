@@ -84,7 +84,7 @@ const wishlistRegis = () => {
 
                 if (wishlist.type == "addWishlist") {
                     $(`.wish-btn[product_id="${product_id}"]`).className = "bi bi-heart-fill fill-btn wish-btn";
-                    flashMessaage("Product added to wishlist");
+                    flashMessage("Product added to wishlist");
                 }
 
                 if (wishlist.type == "removeWishlist") {
@@ -125,14 +125,14 @@ const addCartRegis = () => {
 
             if (result) {
                 $(`.cart-btn[product_id="${product_id}"]`).className = "bi bi-cart-check-fill cart-btn";
-                flashMessaage("Product added to cart")
+                flashMessage("Product added to cart")
                 cartReplace(result);
             }
         });
     });
 }
 
-const flashMessaage = (message) => {
+const flashMessage = (message) => {
     const flash_message = $('.flash-message');
     const message_el =  $('.flash-message .message');
 
@@ -166,8 +166,9 @@ const editAddressRegis = () => {
 
             const address_id = e.target.getAttribute('address_id');
             const result = await api.editAddress(address_id);
+            const template = await api.getCountry();
 
-            $('#address-modal').innerHTML = template.addModal();
+            $('#address-modal').innerHTML = template;
 
             if (result) {
                 $('#address_id').value = result.id;
@@ -181,6 +182,7 @@ const editAddressRegis = () => {
             }
             
             saveAddressRegis();
+            deleteAddressRegis();
             closeModalBtnRegis();
         });
     });
@@ -223,6 +225,7 @@ const saveAddressRegis = () => {
                 selectAddressRegis();
                 addAddressRegis();
                 editAddressRegis();
+                deleteAddressRegis();
 
                 if (data.address_id ==  $('#address_input').value) {
                     location.reload();
@@ -249,6 +252,25 @@ const selectAddressRegis = () => {
     });
 }
 
+const deleteAddressRegis = () => {
+    const address_list = all(".delete-address");
+
+    address_list.forEach(el => {
+        el.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const address_id = e.target.getAttribute('address_id');
+            const template = await api.deleteAddress(address_id);
+
+            $('#address-modal').innerHTML = template;
+
+            addAddressRegis();
+            selectAddressRegis();
+            editAddressRegis();
+        })
+    })
+}
+
 const closeModalBtnRegis = () => {
     const close_btn = all('.form-close');
 
@@ -266,6 +288,7 @@ const closeModalBtnRegis = () => {
                     addAddressRegis();  
                     editAddressRegis(); 
                     selectAddressRegis();
+                    deleteAddressRegis();
                 }
             }, timeout);
         });
@@ -303,6 +326,7 @@ const calculateSummary = () => {
     saveAddressRegis();
     addAddressRegis();
     editAddressRegis();
+    deleteAddressRegis();
 })();
 
 

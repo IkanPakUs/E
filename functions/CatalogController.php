@@ -22,14 +22,14 @@ class CatalogController
     protected function loadCatalog() {
         $filter = @$_GET["filter"];
         
-        $catalog = DB::table('products');
+        $catalog = DB::table('products')->where('stock', '>', 0);
 
         if (isset($filter)) {
             $catalog = $catalog->where("category_id", "=", $filter["category"]);
         }
 
         $catalog = $catalog->get();
-
+        
         $this->catalog = $catalog;
         $this->catalog_count = count($catalog);
     }

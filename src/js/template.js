@@ -47,13 +47,13 @@ const catalog = (data) => {
             </div>`
 }
 
-const modal = (data) => {
+const addressModal = (data) => {
     const list = data.length ? data.map((address) => addressList(address)).join(" ") : "";
 
     return `<div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Change Address</h5>
+                        <h5 class="modal-title" id="change-address">Change Address</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -70,11 +70,17 @@ const modal = (data) => {
 
 const addressList = (address) => {
 
-    let is_main = '';
+    let is_main = null;
+    let delete_btn = null;
 
     if (address.is_main == 0) {
         is_main = `<span></span> 
-                    <a href="#" class="select-address" address_id="${address.id}">Select this address</a>`
+                   <a href="#" class="select-address" address_id="${address.id}">Select this address</a>`
+    }
+
+    if (address.is_main == 0) {
+        delete_btn = `<span></span> 
+                      <a href="#" class="delete-address" address_id="${address.id}">Delete</a>`
     }
 
     return `<div class="address-card">
@@ -92,11 +98,12 @@ const addressList = (address) => {
                 <div class="address__action">
                     <a href="#" class="edit-address" address_id="${address.id}">Edit address</a>
                     ${is_main ?? ''}
+                    ${delete_btn ?? ''}
                 </div>
             </div>`
 }
 
-const addModal = (country) => {
+const addModalAddress = (country) => {
     const template_option = country.map((v) => {
         return `<option value="${v.code}">${v.name}</option>`
     }).join(" ");
@@ -203,4 +210,4 @@ const pagination = (i) => {
     return `<li page="${i}" class="paginate_nav">${i}</li>`
 }
 
-export { catalog, cart, modal, addModal, transaction, user, store, pagination }
+export { catalog, cart, addressModal, addModalAddress, transaction, user, store, pagination }

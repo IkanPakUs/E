@@ -41,6 +41,10 @@ class AddressDomain
                 $this->saveAddress($request);
                 break;
 
+            case 'deleteAddress':
+                $this->deleteAddress($request);
+                break;
+
             case 'getCountry':
                 $this->getCountry();
                 break;
@@ -50,7 +54,7 @@ class AddressDomain
     protected function getAddressList() {
         $user = $_SESSION['user'];
 
-        $address_list = DB::table('user_detail')->where('user_id', '=', $user['id'])->get();
+        $address_list = DB::table('user_addresses')->where('user_id', '=', $user['id'])->get();
         echo json_encode(["status" => 1, "data" => $address_list]);
     }
 
@@ -58,14 +62,14 @@ class AddressDomain
         $user = $this->user;
         $address_id = $_GET["id"];
 
-        DB::table('user_detail')->where('user_id', '=', $user['id'])->update(["is_main" => 0]);
-        DB::table('user_detail')->where('user_id', '=', $user['id'])->where('id', '=', $address_id)->update(["is_main" => 1]); 
+        DB::table('user_addresses')->where('user_id', '=', $user['id'])->update(["is_main" => 0]);
+        DB::table('user_addresses')->where('user_id', '=', $user['id'])->where('id', '=', $address_id)->update(["is_main" => 1]); 
     }
 
     protected function editAddress() {
         $address_id = $_GET['id'];
 
-        $address = DB::table('user_detail')->find($address_id);
+        $address = DB::table('user_addresses')->find($address_id);
 
         echo json_encode(["status" => 1, "data" => $address]);
     }
@@ -80,14 +84,31 @@ class AddressDomain
                 $address_id = $data["address_id"];
                 unset($data["address_id"]);
 
-                DB::table('user_detail')->where('id', '=', $address_id)->update($data);
+                DB::table('user_addresses')->where('id', '=', $address_id)->update($data);
             } else {
-                DB::table('user_detail')->insert($data);
+                DB::table('user_addresses')->insert($data);
             }
 
 
-            $list_address = DB::table('user_detail')->where('user_id', '=', $user_id)->get();
+            $list_address = DB::table('user_addresses')->where('user_id', '=', $user_id)->get();
     
+            echo json_encode(["status" => 1, "data" => $list_address]);
+        } catch (\Exception $e) {
+            echo json_encode(["status" => 0]);
+        }
+    }
+
+    protected function deleteAddress($input) {
+        $user_id = $this->user["id"];
+        $data = (array) json_decode($input->payload);
+
+        $address_id = $data['address_id'];
+
+        try {
+            DB::table('user_addresses')->where('id', '=', $address_id)->delete();
+
+            $list_address = DB::table('user_addresses')->where('user_id', '=', $user_id)->get();
+
             echo json_encode(["status" => 1, "data" => $list_address]);
         } catch (\Exception $e) {
             echo json_encode(["status" => 0]);

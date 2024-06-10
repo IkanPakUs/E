@@ -8,19 +8,17 @@ if (session_status() === PHP_SESSION_NONE) {
 
 class CartDomain
 {
-     public $user, $role, $wishlist;
+    public $user, $role, $wishlist;
 
     public function __construct()
     {
         $user = $_SESSION["user"] ?? null;
-        $role = $user["role_id"] ?? null;
 
         if (!isset($user)) {
             echo json_encode(['status' => 0, 'message' => 'User not authorized', 'code' =>  401]);
         }
         
         $this->user = $user;
-        $this->rolel = $role;
     }
 
     public function callMethod() {
