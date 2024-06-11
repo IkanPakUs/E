@@ -457,6 +457,15 @@ a {
     font-weight: bold;
 }
 
+.product-grid.content #product-modal .image-product-detail {
+    max-height: 600px;
+    width: fit-content;
+}
+
+.product-grid.content #product-modal .image-product-detail img {
+    height: 100%;
+}
+
 /* HOME STYLE */
 #home.content {
     padding: 35px 0px;

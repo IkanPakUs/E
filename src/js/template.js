@@ -1,10 +1,30 @@
+// Global Var
+const folder_path = 'ecommerce-php-native';
+
 // Methods
 
 const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // HTML Element
+
+const productModal = (data) => {
+    return `<div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="card w-100">
+                        <div class="image-product-detail">
+                            <img src="${location.protocol}//${ document.location.host}/${folder_path}/src/img/product/${data.image_url}" class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text fw-bold text-center">${data.name}</p>
+                            <p class="card-text text-center">IDR ${formatPrice(data.price)}</p>
+                            <p class="card-text">${data.description ? data.description : ''}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+}
 
 const cart = (data) => {
     return `<div class="cart">
@@ -210,4 +230,4 @@ const pagination = (i) => {
     return `<li page="${i}" class="paginate_nav">${i}</li>`
 }
 
-export { catalog, cart, addressModal, addModalAddress, transaction, user, store, pagination }
+export { catalog, cart, addressModal, addModalAddress, transaction, user, store, pagination, productModal }

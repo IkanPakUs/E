@@ -8,7 +8,7 @@ require_once "./DB.php";
 
 class Search
 {
-    public static $products, $type, $value;
+    public static $products;
 
     public static function productFilter() {
         self::getProducts();
@@ -119,7 +119,7 @@ class Search
         $limit = 10;
         $offset = ($_GET["meta"]["page"] * $limit) - $limit;
 
-        $products = DB::table('products')->select('products.id as product_id', 'products.name', 'price', 'category_id', 'categories.id as category', 'categories.name as category_name');
+        $products = DB::table('products')->select('products.id as product_id', 'products.name', 'price', 'category_id', 'categories.id as category', 'categories.name as category_name')->where('products.stock', '>', 0);
 
         foreach ($parameter_search as $key => $value) {
             if (in_array($key, $like_search)) {
@@ -155,38 +155,44 @@ class Search
         echo json_encode($data);
     }
 
-    protected static function getProducts() {
-        if (isset($_GET['filter']) || (isset($_GET['category']) && $_GET['category'] != '')) {
+    public static function getProductById() {
+        $product_id = $_GET['id'];
 
+        $product = DB::table('products')->select('products.*', 'categories.name as category_name')->leftJoin('categories', 'categories.id', '=', 'products.category_id')->find($product_id, 'products.id');
+
+        $data = [
+            "status" => true,
+            "data" => $product,
+        ];
+
+        echo json_encode($data);
+    }
+
+    protected static function getProducts() {
+        $products = DB::table('products')->where('stock', '>', 0);
+        
+        if (isset($_GET['filter']) || (isset($_GET['category']) && $_GET['category'] != '')) {
             if (isset($_GET["filter"])) {
-                $products = DB::table('products')->where('name', 'like', "%" . $_GET["filter"] . "%")->get();
-                $type = "name";
-                $value = $_GET["filter"];
+                $products = $products->where('name', 'like', "%" . $_GET["filter"] . "%");
             }
 
             if (isset($_GET["category"])) {
-                $products = DB::table('products')->where('category_id', '=', $_GET['category'])->get();
-                $type = "category";
-                $value = $_GET["category"];
+                $products = $products->where('category_id', '=', $_GET['category']);
             }
-
-        } else {
-            $products = DB::table('products')->get();
-            $type = '';
-            $value = '';       
         }
 
-        self::$products = $products;
-        self::$type = $type;
-        self::$value = $value;
+        self::$products = $products->get();
     }
 
     protected static function productResponse() {
         $user = @$_SESSION["user"];
         $products = self::$products;
-        $type = self::$type;
-        $value = self::$value;
         $wishlist = @$_SESSION["wishlist"];
+
+        $data = [
+            "status" => false,
+            "message" => "Data not found",
+        ];
 
         if(isset($user)) {
             $user_cart = DB::table('user_cart')->where('user_id', '=', $user["id"])->get();
@@ -209,28 +215,11 @@ class Search
                 }, $products);
             }
 
-            $data = [
-                "status" => true,
-                "message" => "",
-                "data" => json_encode($products),
-                "filter" => [
-                    "type" => $type,
-                    "value" => $value
-                ],
-            ];
-        
-        } else {
-            $data = [
-                "status" => false,
-                "message" => "Data not found",
-                "data" => [],
-                "filter" => [
-                    "type" => $type,
-                    "value" => $value
-                ],
-            ];
+            $data["status"] = true;
+            $data["message"] = "";
+            $data["data"] = $products;
         }
-        
+
         echo json_encode($data);
     }
 }

@@ -126,6 +126,6 @@ $body = file_get_contents('php://input');
 $request = json_decode($body);
 
 if (isset($request->method) || isset($_GET["method"])) {
-    $StoreDomain = new AddressDomain();
-    $StoreDomain->callMethod($request);
+    $AddressDomain = new AddressDomain();
+    $AddressDomain->callMethod($request);
 }

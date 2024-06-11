@@ -49,6 +49,10 @@
 						<label for="name">Name</label>
 						<input type="text" name="name" id="name" value="<?= @$Store->product['name'] ?>" required>
 					</div>
+					<div class="form-group">
+						<label for="desc">Description</label>
+						<textarea name="desc" id="desc" rows="5" value="<?= @$Store->product['description'] ?>"></textarea>
+					</div>
 					<div class="form-wrap">
 						<div class="left-side">
 							<div class="image-input">

@@ -1,6 +1,23 @@
 import { $, all } from './DOMHelper.js';
 import * as template from './template.js';
 
+const getProductDetail = (id) => {
+    return new Promise(resolve => {
+        fetch(`helpers/Search.php?page=getProductById&id=${id}`, {
+            method: "GET"
+        }).then(async (res) => {
+            const result = await res.json().then(result => result);
+
+            if (result.status) {
+                const el = template.productModal(result.data);
+                return resolve(el);
+            }
+
+            return resolve(false)
+        });
+    });
+}
+
 const productFilter = (qs) => {
     return new Promise(resolve => {
         fetch(`helpers/Search.php?${qs}`, {
@@ -11,12 +28,8 @@ const productFilter = (qs) => {
         }).then(async (res) => {
             const result = await res.json().then(result => result);
     
-            if (['name', 'category'].includes(result.filter.type)) {
-                localStorage.setItem(result.filter.type, result.filter.value);
-            }
-    
             if (result.status) {
-                const data = JSON.parse(result.data)
+                const data = result.data
                 const total = data.length;
                 const el = data.map((v) => template.catalog(v)).join(" ");
 
@@ -262,7 +275,7 @@ const getCountryOrder = () => {
             body: JSON.stringify({ 'method': 'getCountryOrder'}),
         }).then(async (res) => {
             const result = await res.json().then(result => result);
-
+            
             if (result.status) {
                 return resolve(result.data);
             }
@@ -304,4 +317,4 @@ const getList = (page, qs) => {
     });
 }
 
-export {productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, deleteAddress, getUsersGrowth, getOrderGrowth, getCountryOrder, getList};
+export {getProductDetail, productFilter, wishlistAction, addCart, removeCart, removeProduct, removeUser, selectAddress, getCountry, saveAddress, getAddress, editAddress, deleteAddress, getUsersGrowth, getOrderGrowth, getCountryOrder, getList};

@@ -27,6 +27,21 @@ const cartReplace = (result) => {
     removeCartRegis();
 }
 
+const productDetailRegis = () => {
+    const products = all('.product-title');
+
+    products.forEach(el => {
+        el.addEventListener("click", async (e) => {
+            const product_id = e.target.getAttribute('product_id');
+            const template = await api.getProductDetail(product_id);
+
+            if (template) {
+                $('#product-modal').innerHTML = template;
+            }
+        });
+    })
+}
+
 const removeCartRegis = () => {
     const cart_product = all('.remove-cart');
     const what_page = $('.content').getAttribute('id');
@@ -327,6 +342,7 @@ const calculateSummary = () => {
     addAddressRegis();
     editAddressRegis();
     deleteAddressRegis();
+    productDetailRegis();
 })();
 
 
@@ -339,7 +355,6 @@ const calculateSummary = () => {
             const what_page = content.getAttribute('id');
 
             if (what_page != "catalog") {
-                localStorage.setItem("name", " ");
                 document.location = "catalog.php";
             }
 
@@ -351,11 +366,10 @@ const calculateSummary = () => {
                 $('.search').value = '';
                 const result = await api.productFilter('');
                 productAttach(result);
-
-                localStorage.removeItem('name');
     
                 wishlistRegis();
                 addCartRegis();
+                productDetailRegis();
             }
         });
     }
@@ -376,6 +390,7 @@ const calculateSummary = () => {
     
             wishlistRegis();
             addCartRegis();
+            productDetailRegis();
         });
     }
 })();
@@ -396,23 +411,9 @@ const calculateSummary = () => {
 
                 wishlistRegis();
                 addCartRegis();
+                productDetailRegis();
             });
         })
-    }
-})();
-
-(async function () {
-    const filter = localStorage.getItem('name');
-
-    if (filter != '' && filter != null) {
-        $('.search-form').classList.toggle('show');
-        $('.search').value = filter;        
-
-        const result = await api.productFilter(`filter=${filter}`);
-        productAttach(result);
-
-        wishlistRegis();
-        addCartRegis();
     }
 })();
 

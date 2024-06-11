@@ -63,10 +63,10 @@
                         </div>
                         <div class="info">
                             <div class="title">
-                                <a href="#"><?= $product["name"] ?></a>
+                                <a class="product-title" data-bs-toggle="modal" data-bs-target="#product-modal" product_id="<?= $product['id'] ?>"><?= $product["name"] ?></a>
                             </div>
                             <div class="price">
-                                <h6>Rp <?= number_format($product["price"], 0, 0, ',') ?></h6>
+                                <h6>Rp <?= number_format($product["price"], 2, ',', '.') ?></h6>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,12 @@
                     </div>
                 <?php endif ?>
             </div>
+            
+            <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="change-product-modal" aria-hidden="true">
+                <div class="modal-dialog"></div>
+            </div>
         </div>
+
 
         <?php include_once('layouts/app-layouts/footer.html') ?>
     </div>

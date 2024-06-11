@@ -136,9 +136,9 @@ class DB {
         return $result->fetch_all(MYSQLI_ASSOC)[0]["total"];
     }
 
-    public static function find($id) {
+    public static function find($id, $column = 'id') {
         self::limit(1);
-        self::where('id', '=', $id);
+        self::where($column, '=', $id);
 
         $result = self::queryGet();
 

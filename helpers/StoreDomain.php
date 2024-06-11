@@ -35,6 +35,7 @@ class StoreDomain
     public function create() {
         $data = [
             "name" => $_POST["name"],
+            "description" => @$_POST["description"],
             "price" => $_POST["price"],
             "stock" => $_POST["stock"],
             "image_url" => $_FILES["image"]["name"],
@@ -53,6 +54,7 @@ class StoreDomain
 
         $data = [
             "name" => $_POST["name"],
+            "description" => @$_POST["desc"],
             "price" => $_POST["price"],
             "stock" => $_POST["stock"],
             "category_id" => $_POST["category"]
